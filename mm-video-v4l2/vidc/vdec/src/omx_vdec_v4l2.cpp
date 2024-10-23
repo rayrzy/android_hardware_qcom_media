@@ -1,5 +1,5 @@
 /*--------------------------------------------------------------------------
-Copyright (c) 2010 - 2019, The Linux Foundation. All rights reserved.
+Copyright (c) 2010 - 2020, The Linux Foundation. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:
@@ -1154,6 +1154,12 @@ OMX_ERRORTYPE omx_vdec::decide_dpb_buffer_mode()
         // V4L2_MPEG_VIDC_VIDEO_DPB_COLOR_FMT_NONE
     }
 
+    eRet = set_dpb(enable_split);
+    if (eRet) {
+        DEBUG_PRINT_HIGH("Failed to set DPB buffer mode: %d", eRet);
+        return eRet;
+    }
+
     if (capability_changed == true) {
         // Get format for CAPTURE port
         fmt.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
@@ -1176,10 +1182,6 @@ OMX_ERRORTYPE omx_vdec::decide_dpb_buffer_mode()
         !BITMASK_PRESENT(&m_flags, OMX_COMPONENT_OUTPUT_ENABLE_PENDING)) {
         DEBUG_PRINT_LOW("Invalid state to decide on dpb-opb split");
         return OMX_ErrorNone;
-    }
-    eRet = set_dpb(enable_split);
-    if (eRet) {
-        DEBUG_PRINT_HIGH("Failed to set DPB buffer mode: %d", eRet);
     }
 
     return eRet;
@@ -3099,7 +3101,7 @@ OMX_ERRORTYPE  omx_vdec::send_command_proxy(OMX_IN OMX_HANDLETYPE hComp,
                struct timespec ts;
 
                clock_gettime(CLOCK_REALTIME, &ts);
-               ts.tv_sec += 2;
+               ts.tv_sec += 1;
                DEBUG_PRINT_LOW("waiting for %d EBDs of CODEC CONFIG buffers ",
                        m_queued_codec_config_count);
                BITMASK_SET(&m_flags, OMX_COMPONENT_FLUSH_DEFERRED);
@@ -11138,12 +11140,11 @@ void omx_vdec::get_preferred_color_aspects(ColorAspects& preferredColorAspects)
     const ColorAspects &defaultColor = preferClientColor ?
         m_internal_color_space.sAspects : m_client_color_space.sAspects;
 
-    /* atoll does not support BT2020 color primaries, hence overriding with
-        BT709 to avoid tone mapping issue at display*/
-    if (!strncmp(m_platform_name, "atoll", 5) &&
-        (m_client_color_space.sAspects.mPrimaries == ColorAspects::PrimariesBT2020)) {
-        m_client_color_space.sAspects.mPrimaries = ColorAspects::PrimariesBT709_5;
-        m_client_color_space.sAspects.mMatrixCoeffs = ColorAspects::MatrixBT709_5;
+    /* Client sets BT2020 for UHD and higher. Set correct aspects if the bistream is 8-bit */
+    if ((m_client_color_space.sAspects.mPrimaries == ColorAspects::PrimariesBT2020) &&
+        (dpb_bit_depth == MSM_VIDC_BIT_DEPTH_8)) {
+    m_client_color_space.sAspects.mPrimaries = ColorAspects::PrimariesBT709_5;
+    m_client_color_space.sAspects.mMatrixCoeffs = ColorAspects::MatrixBT709_5;
     }
 
     preferredColorAspects.mPrimaries = preferredColor.mPrimaries != ColorAspects::PrimariesUnspecified ?
@@ -12604,6 +12605,10 @@ OMX_BUFFERHEADERTYPE* omx_vdec::allocate_color_convert_buf::get_il_buf_hdr
             } else {
                 unsigned int filledLen = 0;
                 c2dcc.getBuffFilledLen(C2D_OUTPUT, filledLen);
+                if (filledLen > omx->m_out_mem_ptr[index].nAllocLen) {
+                    DEBUG_PRINT_ERROR("Invalid C2D FBD length filledLen = %d alloclen = %d ",filledLen,omx->m_out_mem_ptr[index].nAllocLen);
+                    filledLen = 0;
+                }
                 m_out_mem_ptr_client[index].nFilledLen = filledLen;
                 omx->m_out_mem_ptr[index].nFilledLen = filledLen;
             }
@@ -12714,9 +12719,9 @@ bool omx_vdec::allocate_color_convert_buf::get_color_format(OMX_COLOR_FORMATTYPE
 
 void omx_vdec::send_codec_config() {
     if (codec_config_flag) {
-        unsigned long p1 = 0; // Parameter - 1
-        unsigned long p2 = 0; // Parameter - 2
-        unsigned long ident = 0;
+        unsigned long p1 = 0, p2 = 0;
+        unsigned long p3 = 0, p4 = 0;
+        unsigned long ident = 0, ident2 = 0;
         pthread_mutex_lock(&m_lock);
         DEBUG_PRINT_LOW("\n Check Queue for codec_config buffer \n");
         while (m_etb_q.m_size) {
@@ -12734,6 +12739,21 @@ void omx_vdec::send_codec_config() {
                 }
             } else if (ident == OMX_COMPONENT_GENERATE_ETB) {
                 if (((OMX_BUFFERHEADERTYPE *)p2)->nFlags & OMX_BUFFERFLAG_CODECCONFIG) {
+                    while (m_ftb_q.m_size) {
+                        m_ftb_q.pop_entry(&p3,&p4,&ident2);
+                        if (ident2 == OMX_COMPONENT_GENERATE_FTB) {
+                            pthread_mutex_unlock(&m_lock);
+                            if (fill_this_buffer_proxy((OMX_HANDLETYPE)p3,\
+                                        (OMX_BUFFERHEADERTYPE *)p4) != OMX_ErrorNone) {
+                                DEBUG_PRINT_ERROR("\n fill_this_buffer_proxy failure");
+                                omx_report_error ();
+                            }
+                            pthread_mutex_lock(&m_lock);
+                        } else if (ident2 == OMX_COMPONENT_GENERATE_FBD) {
+                            fill_buffer_done(&m_cmp,(OMX_BUFFERHEADERTYPE *)p3);
+                        }
+                    }
+                    pthread_mutex_unlock(&m_lock);
                     if (empty_this_buffer_proxy((OMX_HANDLETYPE)p1,\
                                 (OMX_BUFFERHEADERTYPE *)p2) != OMX_ErrorNone) {
                         DEBUG_PRINT_ERROR("\n empty_this_buffer_proxy failure");

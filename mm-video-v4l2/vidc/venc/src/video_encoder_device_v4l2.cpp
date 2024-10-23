@@ -1644,6 +1644,7 @@ bool venc_dev::venc_open(OMX_U32 codec)
     unsigned int alignment = 0,buffer_size = 0, temp =0;
     struct v4l2_control control;
     OMX_STRING device_name = (OMX_STRING)"/dev/video33";
+    OMX_STRING cma_device_name = (OMX_STRING)"/dev/video35";
     char property_value[PROPERTY_VALUE_MAX] = {0};
     FILE *soc_file = NULL;
     char buffer[10];
@@ -1658,7 +1659,12 @@ bool venc_dev::venc_open(OMX_U32 codec)
 #ifdef HYPERVISOR
     m_nDriver_fd = hypv_open(device_name, O_RDWR);
 #else
-    m_nDriver_fd = open(device_name, O_RDWR);
+    DEBUG_PRINT_LOW("encoder cma status %d", venc_handle->get_cma_status());
+    if (venc_handle->get_cma_status()) {
+        m_nDriver_fd = open(cma_device_name, O_RDWR);
+    } else {
+        m_nDriver_fd = open(device_name, O_RDWR);
+    }
 #endif
 
     if ((int)m_nDriver_fd < 0) {
@@ -5721,7 +5727,7 @@ bool venc_dev::venc_set_intra_refresh()
 {
     bool status = true;
     int rc;
-    struct v4l2_control control_mode, control_mbs;
+    struct v4l2_control control_mode;
     control_mode.id   = V4L2_CID_MPEG_VIDC_VIDEO_INTRA_REFRESH_MODE_CYCLIC;
     control_mode.value = 0;
     // There is no disabled mode.  Disabled mode is indicated by a 0 count.
@@ -5744,7 +5750,7 @@ bool venc_dev::venc_set_intra_refresh()
         return false;
     }
 
-    intra_refresh.mbcount = control_mbs.value;
+    intra_refresh.mbcount = control_mode.value;
     return status;
 }
 
