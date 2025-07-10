@@ -31,17 +31,18 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /*========================================================================
 
-*//** @file QOMX_VideoExtensions.h
+*/
+/** @file QOMX_VideoExtensions.h
 
 @par FILE SERVICES:
-      Qualcomm extensions API for OpenMax IL Video.
+    Qualcomm extensions API for OpenMax IL Video.
 
-      This file contains the description of the Qualcomm OpenMax IL
-      video extention interface, through which the IL client and OpenMax
-      components can access additional video capabilities.
+    This file contains the description of the Qualcomm OpenMax IL
+    video extention interface, through which the IL client and OpenMax
+    components can access additional video capabilities.
 
-*//*====================================================================== */
-
+*/
+/*====================================================================== */
 
 /*========================================================================== */
 
@@ -59,29 +60,28 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ========================================================================== */
 
-#if defined( __cplusplus )
-extern "C"
-{
+#if defined(__cplusplus)
+extern "C" {
 #endif /* end of macro __cplusplus */
 
 /* Video extension strings */
-#define OMX_QCOM_INDEX_PARAM_VIDEO_SYNTAXHDR                "OMX.QCOM.index.param.video.SyntaxHdr"
-#define OMX_QCOM_INDEX_PARAM_VIDEO_ENCODERMODE              "OMX.QCOM.index.param.video.EncoderMode"
-#define OMX_QCOM_INDEX_CONFIG_VIDEO_INTRAREFRESH            "OMX.QCOM.index.config.video.IntraRefresh"
-#define OMX_QCOM_INDEX_CONFIG_VIDEO_INTRAPERIOD             "OMX.QCOM.index.config.video.IntraPeriod"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_SYNTAXHDR "OMX.QCOM.index.param.video.SyntaxHdr"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_ENCODERMODE "OMX.QCOM.index.param.video.EncoderMode"
+#define OMX_QCOM_INDEX_CONFIG_VIDEO_INTRAREFRESH "OMX.QCOM.index.config.video.IntraRefresh"
+#define OMX_QCOM_INDEX_CONFIG_VIDEO_INTRAPERIOD "OMX.QCOM.index.config.video.IntraPeriod"
 #define OMX_QCOM_INDEX_CONFIG_VIDEO_TEMPORALSPATIALTRADEOFF "OMX.QCOM.index.config.video.TemporalSpatialTradeOff"
-#define OMX_QCOM_INDEX_CONFIG_VIDEO_MBCONCEALMENTREPORTING  "OMX.QCOM.index.config.video.MBConcealmentReporting"
-#define OMX_QCOM_INDEX_PARAM_VIDEO_EXTRADATAMULTISLICEINFO  "OMX.QCOM.index.param.video.ExtraDataMultiSliceInfo" /**< reference: QOMX_ENABLETYPE */
-#define OMX_QCOM_INDEX_CONFIG_VIDEO_FLOWSTATUS              "OMX.QCOM.index.config.video.FlowStatus"             /**< reference: QOMX_FLOWSTATUSTYPE */
-#define OMX_QCOM_INDEX_PARAM_VIDEO_PICTURETYPEDECODE        "OMX.QCOM.index.param.video.PictureTypeDecode"       /**< reference: QOMX_VIDEO_DECODEPICTURETYPE */
-#define OMX_QCOM_INDEX_PARAM_VIDEO_SAMPLEASPECTRATIO        "OMX.QCOM.index.param.video.SampleAspectRatio"       /**< reference: QOMX_VIDEO_SAMPLEASPECTRATIO */
-#define OMX_QCOM_INDEX_PARAM_VIDEO_EXTRADATALTRINFO         "OMX.QCOM.index.param.video.ExtraDataLTRInfo"        /**< reference: QOMX_ENABLETYPE */
+#define OMX_QCOM_INDEX_CONFIG_VIDEO_MBCONCEALMENTREPORTING "OMX.QCOM.index.config.video.MBConcealmentReporting"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_EXTRADATAMULTISLICEINFO "OMX.QCOM.index.param.video.ExtraDataMultiSliceInfo" /**< reference: QOMX_ENABLETYPE */
+#define OMX_QCOM_INDEX_CONFIG_VIDEO_FLOWSTATUS "OMX.QCOM.index.config.video.FlowStatus"                         /**< reference: QOMX_FLOWSTATUSTYPE */
+#define OMX_QCOM_INDEX_PARAM_VIDEO_PICTURETYPEDECODE "OMX.QCOM.index.param.video.PictureTypeDecode"             /**< reference: QOMX_VIDEO_DECODEPICTURETYPE */
+#define OMX_QCOM_INDEX_PARAM_VIDEO_SAMPLEASPECTRATIO "OMX.QCOM.index.param.video.SampleAspectRatio"             /**< reference: QOMX_VIDEO_SAMPLEASPECTRATIO */
+#define OMX_QCOM_INDEX_PARAM_VIDEO_EXTRADATALTRINFO "OMX.QCOM.index.param.video.ExtraDataLTRInfo"               /**< reference: QOMX_ENABLETYPE */
 
 /* Video coding types */
-#define OMX_QCOM_INDEX_PARAM_VIDEO_DIVX                     "OMX.QCOM.index.param.video.DivX"
-#define OMX_QCOM_INDEX_PARAM_VIDEO_VP                       "OMX.QCOM.index.param.video.VP"
-#define OMX_QCOM_INDEX_PARAM_VIDEO_SPARK                    "OMX.QCOM.index.param.video.Spark"
-#define OMX_QCOM_INDEX_PARAM_VIDEO_VC1                      "OMX.QCOM.index.param.video.VC1"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_DIVX "OMX.QCOM.index.param.video.DivX"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_VP "OMX.QCOM.index.param.video.VP"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_SPARK "OMX.QCOM.index.param.video.Spark"
+#define OMX_QCOM_INDEX_PARAM_VIDEO_VC1 "OMX.QCOM.index.param.video.VC1"
 
 /**
  * Enumeration used to define the extended video compression
@@ -91,27 +91,26 @@ extern "C"
  *        additional work must be done to configure the exact
  *        flavor of the compression to be used.
  */
-typedef enum QOMX_VIDEO_CODINGTYPE
-{
-    QOMX_VIDEO_CodingDivX   = 0x7F000001, /**< all versions of DivX */
-    QOMX_VIDEO_CodingVP     = 0x7F000002, /**< all versions of On2 VP codec */
-    QOMX_VIDEO_CodingSpark  = 0x7F000003, /**< Sorenson Spark */
-    QOMX_VIDEO_CodingVC1    = 0x7F000004, /**< VC-1 */
-    QOMX_VIDEO_MPEG1        = 0x7F000005  /**< MPEG-1 */
+typedef enum QOMX_VIDEO_CODINGTYPE {
+  QOMX_VIDEO_CodingDivX = 0x7F000001,  /**< all versions of DivX */
+  QOMX_VIDEO_CodingVP = 0x7F000002,    /**< all versions of On2 VP codec */
+  QOMX_VIDEO_CodingSpark = 0x7F000003, /**< Sorenson Spark */
+  QOMX_VIDEO_CodingVC1 = 0x7F000004,   /**< VC-1 */
+  QOMX_VIDEO_MPEG1 = 0x7F000005        /**< MPEG-1 */
 } QOMX_VIDEO_CODINGTYPE;
 
 /**
  * DivX Versions
  */
 typedef enum QOMX_VIDEO_DIVXFORMATTYPE {
-    QOMX_VIDEO_DIVXFormatUnused = 0x01, /**< Format unused or unknown */
-    QOMX_VIDEO_DIVXFormat311    = 0x02, /**< DivX 3.11 */
-    QOMX_VIDEO_DIVXFormat4      = 0x04, /**< DivX 4 */
-    QOMX_VIDEO_DIVXFormat5      = 0x08, /**< DivX 5 */
-    QOMX_VIDEO_DIVXFormat6      = 0x10, /**< DivX 6 */
-    QOMX_VIDEO_DIVXFormatKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_DIVXFormatVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_DIVXFormatMax = 0x7FFFFFFF
+  QOMX_VIDEO_DIVXFormatUnused = 0x01, /**< Format unused or unknown */
+  QOMX_VIDEO_DIVXFormat311 = 0x02,    /**< DivX 3.11 */
+  QOMX_VIDEO_DIVXFormat4 = 0x04,      /**< DivX 4 */
+  QOMX_VIDEO_DIVXFormat5 = 0x08,      /**< DivX 5 */
+  QOMX_VIDEO_DIVXFormat6 = 0x10,      /**< DivX 6 */
+  QOMX_VIDEO_DIVXFormatKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_DIVXFormatVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_DIVXFormatMax = 0x7FFFFFFF
 } QOMX_VIDEO_DIVXFORMATTYPE;
 
 /**
@@ -119,14 +118,14 @@ typedef enum QOMX_VIDEO_DIVXFORMATTYPE {
  * various performance bounds.
  */
 typedef enum QOMX_VIDEO_DIVXPROFILETYPE {
-    QOMX_VIDEO_DivXProfileqMobile = 0x01, /**< qMobile Profile */
-    QOMX_VIDEO_DivXProfileMobile  = 0x02, /**< Mobile Profile */
-    QOMX_VIDEO_DivXProfileMT      = 0x04, /**< Mobile Theatre Profile */
-    QOMX_VIDEO_DivXProfileHT      = 0x08, /**< Home Theatre Profile */
-    QOMX_VIDEO_DivXProfileHD      = 0x10, /**< High Definition Profile */
-    QOMX_VIDEO_DIVXProfileKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_DIVXProfileVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_DIVXProfileMax = 0x7FFFFFFF
+  QOMX_VIDEO_DivXProfileqMobile = 0x01, /**< qMobile Profile */
+  QOMX_VIDEO_DivXProfileMobile = 0x02,  /**< Mobile Profile */
+  QOMX_VIDEO_DivXProfileMT = 0x04,      /**< Mobile Theatre Profile */
+  QOMX_VIDEO_DivXProfileHT = 0x08,      /**< Home Theatre Profile */
+  QOMX_VIDEO_DivXProfileHD = 0x10,      /**< High Definition Profile */
+  QOMX_VIDEO_DIVXProfileKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_DIVXProfileVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_DIVXProfileMax = 0x7FFFFFFF
 } QOMX_VIDEO_DIVXPROFILETYPE;
 
 /**
@@ -140,25 +139,25 @@ typedef enum QOMX_VIDEO_DIVXPROFILETYPE {
  *  eProfile   : Profile of DivX stream / data
  */
 typedef struct QOMX_VIDEO_PARAM_DIVXTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_VIDEO_DIVXFORMATTYPE eFormat;
-    QOMX_VIDEO_DIVXPROFILETYPE eProfile;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_VIDEO_DIVXFORMATTYPE eFormat;
+  QOMX_VIDEO_DIVXPROFILETYPE eProfile;
 } QOMX_VIDEO_PARAM_DIVXTYPE;
 
 /**
  * VP Versions
  */
 typedef enum QOMX_VIDEO_VPFORMATTYPE {
-    QOMX_VIDEO_VPFormatUnused = 0x01, /**< Format unused or unknown */
-    QOMX_VIDEO_VPFormat6      = 0x02, /**< VP6 Video Format */
-    QOMX_VIDEO_VPFormat7      = 0x04, /**< VP7 Video Format */
-    QOMX_VIDEO_VPFormat8      = 0x08, /**< VP8 Video Format */
-    QOMX_VIDEO_VPFormat9      = 0x10, /**< VP9 Video Format */
-    QOMX_VIDEO_VPFormatKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_VPFormatVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_VPFormatMax = 0x7FFFFFFF
+  QOMX_VIDEO_VPFormatUnused = 0x01, /**< Format unused or unknown */
+  QOMX_VIDEO_VPFormat6 = 0x02,      /**< VP6 Video Format */
+  QOMX_VIDEO_VPFormat7 = 0x04,      /**< VP7 Video Format */
+  QOMX_VIDEO_VPFormat8 = 0x08,      /**< VP8 Video Format */
+  QOMX_VIDEO_VPFormat9 = 0x10,      /**< VP9 Video Format */
+  QOMX_VIDEO_VPFormatKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_VPFormatVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_VPFormatMax = 0x7FFFFFFF
 } QOMX_VIDEO_VPFORMATTYPE;
 
 /**
@@ -166,15 +165,15 @@ typedef enum QOMX_VIDEO_VPFORMATTYPE {
  * encoding tools.
  */
 typedef enum QOMX_VIDEO_VPPROFILETYPE {
-    QOMX_VIDEO_VPProfileSimple   = 0x01, /**< Simple Profile, applies to VP6 only */
-    QOMX_VIDEO_VPProfileAdvanced = 0x02, /**< Advanced Profile, applies to VP6 only */
-    QOMX_VIDEO_VPProfileVersion0 = 0x04, /**< Version 0, applies to VP7 and VP8 */
-    QOMX_VIDEO_VPProfileVersion1 = 0x08, /**< Version 1, applies to VP7 and VP8 */
-    QOMX_VIDEO_VPProfileVersion2 = 0x10, /**< Version 2, applies to VP8 only */
-    QOMX_VIDEO_VPProfileVersion3 = 0x20, /**< Version 3, applies to VP8 only */
-    QOMX_VIDEO_VPProfileKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_VPProfileVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_VPProfileMax = 0x7FFFFFFF
+  QOMX_VIDEO_VPProfileSimple = 0x01,   /**< Simple Profile, applies to VP6 only */
+  QOMX_VIDEO_VPProfileAdvanced = 0x02, /**< Advanced Profile, applies to VP6 only */
+  QOMX_VIDEO_VPProfileVersion0 = 0x04, /**< Version 0, applies to VP7 and VP8 */
+  QOMX_VIDEO_VPProfileVersion1 = 0x08, /**< Version 1, applies to VP7 and VP8 */
+  QOMX_VIDEO_VPProfileVersion2 = 0x10, /**< Version 2, applies to VP8 only */
+  QOMX_VIDEO_VPProfileVersion3 = 0x20, /**< Version 3, applies to VP8 only */
+  QOMX_VIDEO_VPProfileKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_VPProfileVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_VPProfileMax = 0x7FFFFFFF
 } QOMX_VIDEO_VPPROFILETYPE;
 
 /**
@@ -188,23 +187,23 @@ typedef enum QOMX_VIDEO_VPPROFILETYPE {
  *  eProfile   : Profile or Version of VP stream / data
  */
 typedef struct QOMX_VIDEO_PARAM_VPTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_VIDEO_VPFORMATTYPE eFormat;
-    QOMX_VIDEO_VPPROFILETYPE eProfile;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_VIDEO_VPFORMATTYPE eFormat;
+  QOMX_VIDEO_VPPROFILETYPE eProfile;
 } QOMX_VIDEO_PARAM_VPTYPE;
 
 /**
  * Spark Versions
  */
 typedef enum QOMX_VIDEO_SPARKFORMATTYPE {
-    QOMX_VIDEO_SparkFormatUnused = 0x01, /**< Format unused or unknown */
-    QOMX_VIDEO_SparkFormat0      = 0x02, /**< Video Format Version 0 */
-    QOMX_VIDEO_SparkFormat1      = 0x04, /**< Video Format Version 1 */
-    QOMX_VIDEO_SparkFormatKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_SparkFormatVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_SparkFormatMax = 0x7FFFFFFF
+  QOMX_VIDEO_SparkFormatUnused = 0x01, /**< Format unused or unknown */
+  QOMX_VIDEO_SparkFormat0 = 0x02,      /**< Video Format Version 0 */
+  QOMX_VIDEO_SparkFormat1 = 0x04,      /**< Video Format Version 1 */
+  QOMX_VIDEO_SparkFormatKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_SparkFormatVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_SparkFormatMax = 0x7FFFFFFF
 } QOMX_VIDEO_SPARKFORMATTYPE;
 
 /**
@@ -217,10 +216,10 @@ typedef enum QOMX_VIDEO_SPARKFORMATTYPE {
  *  eFormat    : Version of Spark stream / data
  */
 typedef struct QOMX_VIDEO_PARAM_SPARKTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_VIDEO_SPARKFORMATTYPE eFormat;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_VIDEO_SPARKFORMATTYPE eFormat;
 } QOMX_VIDEO_PARAM_SPARKTYPE;
 
 /**
@@ -228,12 +227,12 @@ typedef struct QOMX_VIDEO_PARAM_SPARKTYPE {
  * various encoding tools.
  */
 typedef enum QOMX_VIDEO_VC1PROFILETYPE {
-    QOMX_VIDEO_VC1ProfileSimple   = 0x01, /**< Simple Profile */
-    QOMX_VIDEO_VC1ProfileMain     = 0x02, /**< Main Profile */
-    QOMX_VIDEO_VC1ProfileAdvanced = 0x04, /**< Advanced Profile */
-    QOMX_VIDEO_VC1ProfileKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_VC1ProfileVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_VC1ProfileMax = 0x7FFFFFFF
+  QOMX_VIDEO_VC1ProfileSimple = 0x01,   /**< Simple Profile */
+  QOMX_VIDEO_VC1ProfileMain = 0x02,     /**< Main Profile */
+  QOMX_VIDEO_VC1ProfileAdvanced = 0x04, /**< Advanced Profile */
+  QOMX_VIDEO_VC1ProfileKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_VC1ProfileVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_VC1ProfileMax = 0x7FFFFFFF
 } QOMX_VIDEO_VC1PROFILETYPE;
 
 /**
@@ -241,17 +240,17 @@ typedef enum QOMX_VIDEO_VC1PROFILETYPE {
  * performance bounds.
  */
 typedef enum QOMX_VIDEO_VC1LEVELTYPE {
-    QOMX_VIDEO_VC1LevelLow    = 0x01, /**< Low Level, applies to simple and main profiles*/
-    QOMX_VIDEO_VC1LevelMedium = 0x02, /**< Medium Level, applies to simple and main profiles */
-    QOMX_VIDEO_VC1LevelHigh   = 0x04, /**< High Level, applies to main profile only */
-    QOMX_VIDEO_VC1Level0      = 0x08, /**< Level 0, applies to advanced profile only */
-    QOMX_VIDEO_VC1Level1      = 0x10, /**< Level 1, applies to advanced profile only */
-    QOMX_VIDEO_VC1Level2      = 0x20, /**< Level 2, applies to advanced profile only */
-    QOMX_VIDEO_VC1Level3      = 0x40, /**< Level 3, applies to advanced profile only */
-    QOMX_VIDEO_VC1Level4      = 0x80, /**< Level 4, applies to advanced profile only */
-    QOMX_VIDEO_VC1LevelKhronosExtensions = 0x6F000000,
-    QOMX_VIDEO_VC1LevelVendorStartUnused = 0x7F000000,
-    QOMX_VIDEO_VC1LevelMax = 0x7FFFFFFF
+  QOMX_VIDEO_VC1LevelLow = 0x01,    /**< Low Level, applies to simple and main profiles*/
+  QOMX_VIDEO_VC1LevelMedium = 0x02, /**< Medium Level, applies to simple and main profiles */
+  QOMX_VIDEO_VC1LevelHigh = 0x04,   /**< High Level, applies to main profile only */
+  QOMX_VIDEO_VC1Level0 = 0x08,      /**< Level 0, applies to advanced profile only */
+  QOMX_VIDEO_VC1Level1 = 0x10,      /**< Level 1, applies to advanced profile only */
+  QOMX_VIDEO_VC1Level2 = 0x20,      /**< Level 2, applies to advanced profile only */
+  QOMX_VIDEO_VC1Level3 = 0x40,      /**< Level 3, applies to advanced profile only */
+  QOMX_VIDEO_VC1Level4 = 0x80,      /**< Level 4, applies to advanced profile only */
+  QOMX_VIDEO_VC1LevelKhronosExtensions = 0x6F000000,
+  QOMX_VIDEO_VC1LevelVendorStartUnused = 0x7F000000,
+  QOMX_VIDEO_VC1LevelMax = 0x7FFFFFFF
 } QOMX_VIDEO_VC1LEVELTYPE;
 
 /**
@@ -265,11 +264,11 @@ typedef enum QOMX_VIDEO_VC1LEVELTYPE {
  *  eLevel     : Level of VC-1 stream / data
  */
 typedef struct QOMX_VIDEO_PARAM_VC1TYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_VIDEO_VC1PROFILETYPE eProfile;
-    QOMX_VIDEO_VC1LEVELTYPE eLevel;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_VIDEO_VC1PROFILETYPE eProfile;
+  QOMX_VIDEO_VC1LEVELTYPE eLevel;
 } QOMX_VIDEO_PARAM_VC1TYPE;
 
 /**
@@ -278,11 +277,11 @@ typedef struct QOMX_VIDEO_PARAM_VC1TYPE {
  * frame sizes, bit rates, decoder frame rates.
  */
 typedef enum QOMX_VIDEO_MPEG4LEVELTYPE {
-    QOMX_VIDEO_MPEG4Level6 = 0x7F000001, /**< Level 6 */
-    QOMX_VIDEO_MPEG4Level7 = 0x7F000002, /**< Level 7 */
-    QOMX_VIDEO_MPEG4Level8 = 0x7F000003, /**< Level 8 */
-    QOMX_VIDEO_MPEG4Level9 = 0x7F000004, /**< Level 9 */
-    QOMX_VIDEO_MPEG4LevelMax = 0x7FFFFFFF
+  QOMX_VIDEO_MPEG4Level6 = 0x7F000001, /**< Level 6 */
+  QOMX_VIDEO_MPEG4Level7 = 0x7F000002, /**< Level 7 */
+  QOMX_VIDEO_MPEG4Level8 = 0x7F000003, /**< Level 8 */
+  QOMX_VIDEO_MPEG4Level9 = 0x7F000004, /**< Level 9 */
+  QOMX_VIDEO_MPEG4LevelMax = 0x7FFFFFFF
 } QOMX_VIDEO_MPEG4LEVELTYPE;
 
 /**
@@ -341,13 +340,12 @@ typedef enum QOMX_VIDEO_MPEG4LEVELTYPE {
  *   Spark      : N/A
  */
 typedef struct QOMX_VIDEO_SYNTAXHDRTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_U32 nBytes;
-    OMX_U8  data[1];
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_U32 nBytes;
+  OMX_U8 data[1];
 } QOMX_VIDEO_SYNTAXHDRTYPE;
-
 
 /**
  * Enumeration used to define the extended video intra refresh types, not
@@ -356,11 +354,9 @@ typedef struct QOMX_VIDEO_SYNTAXHDRTYPE {
  * ENUMS:
  *  IntraRefreshRandom         : Random intra refresh mode.
  */
-typedef enum QOMX_VIDEO_INTRAREFRESHTYPE
-{
-    QOMX_VIDEO_IntraRefreshRandom      = 0x7F100000
+typedef enum QOMX_VIDEO_INTRAREFRESHTYPE {
+  QOMX_VIDEO_IntraRefreshRandom = 0x7F100000
 } QOMX_VIDEO_INTRAREFRESHTYPE;
-
 
 /**
  * This structure is used to configure the intra periodicity for encoder.
@@ -379,15 +375,14 @@ typedef enum QOMX_VIDEO_INTRAREFRESHTYPE
  *  nPFrames : Specifies the number of P frames between each I Frame.
  *  nBFrames : Specifies the number of B frames between each I Frame.
  */
-typedef struct QOMX_VIDEO_INTRAPERIODTYPE  {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_U32 nIDRPeriod;
-    OMX_U32 nPFrames;
-    OMX_U32 nBFrames;
+typedef struct QOMX_VIDEO_INTRAPERIODTYPE {
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_U32 nIDRPeriod;
+  OMX_U32 nPFrames;
+  OMX_U32 nBFrames;
 } QOMX_VIDEO_INTRAPERIODTYPE;
-
 
 /**
  * Enumeration used to define the extended video extra data payload types not
@@ -424,14 +419,12 @@ typedef struct QOMX_VIDEO_INTRAPERIODTYPE  {
  *  will be immediately followed by the associated structure. Padding bytes
  *  are appended to ensure 32 bit address alignment if needed.
  */
-typedef enum QOMX_VIDEO_EXTRADATATYPE
-{
-   QOMX_ExtraDataVideoMultiSliceInfo = 0x7F100000,
-   QOMX_ExtraDataVideoNumConcealedMB,
-   QOMX_ExtraDataOMXIndex,
-   QOMX_ExtraDataHDCPEncryptionInfo
+typedef enum QOMX_VIDEO_EXTRADATATYPE {
+  QOMX_ExtraDataVideoMultiSliceInfo = 0x7F100000,
+  QOMX_ExtraDataVideoNumConcealedMB,
+  QOMX_ExtraDataOMXIndex,
+  QOMX_ExtraDataHDCPEncryptionInfo
 } QOMX_VIDEO_EXTRADATATYPE;
-
 
 /**
  * Enumeration used to define the video encoder modes
@@ -451,11 +444,10 @@ typedef enum QOMX_VIDEO_EXTRADATATYPE
  *                   this, client should set mode back to EncoderModeDefault
  *                   first and then change OMX_VIDEO_CONTROLRATETYPE.
  */
-typedef enum QOMX_VIDEO_ENCODERMODETYPE
-{
-    QOMX_VIDEO_EncoderModeDefault        = 0x01,
-    QOMX_VIDEO_EncoderModeMMS            = 0x02,
-    QOMX_VIDEO_EncoderModeMax            = 0x7FFFFFFF
+typedef enum QOMX_VIDEO_ENCODERMODETYPE {
+  QOMX_VIDEO_EncoderModeDefault = 0x01,
+  QOMX_VIDEO_EncoderModeMMS = 0x02,
+  QOMX_VIDEO_EncoderModeMax = 0x7FFFFFFF
 } QOMX_VIDEO_ENCODERMODETYPE;
 
 /**
@@ -468,12 +460,11 @@ typedef enum QOMX_VIDEO_ENCODERMODETYPE
  *  nMode : defines the video encoder mode
  */
 typedef struct QOMX_VIDEO_PARAM_ENCODERMODETYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_VIDEO_ENCODERMODETYPE nMode;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_VIDEO_ENCODERMODETYPE nMode;
 } QOMX_VIDEO_PARAM_ENCODERMODETYPE;
-
 
 /**
  * This structure is used to set the temporal (picture rate) - spatial
@@ -494,10 +485,10 @@ typedef struct QOMX_VIDEO_PARAM_ENCODERMODETYPE {
  *  in rate control decisions.
  */
 typedef struct QOMX_VIDEO_TEMPORALSPATIALTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_U32 nTSFactor;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_U32 nTSFactor;
 } QOMX_VIDEO_TEMPORALSPATIALTYPE;
 
 /**
@@ -514,10 +505,10 @@ typedef struct QOMX_VIDEO_TEMPORALSPATIALTYPE {
  *               OMX_FALSE: Disables MB concealment reporting
  */
 typedef struct QOMX_VIDEO_MBCONCEALMENTREPORTINGTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_BOOL bEnableMBConcealmentReporting;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_BOOL bEnableMBConcealmentReporting;
 } QOMX_VIDEO_MBCONCEALMENTREPORTINGTYPE;
 
 /**
@@ -529,7 +520,7 @@ typedef struct QOMX_VIDEO_MBCONCEALMENTREPORTINGTYPE {
  *  H.264 Specific Picture Types:   IDR
  */
 typedef enum QOMX_VIDEO_PICTURETYPE {
-    QOMX_VIDEO_PictureTypeIDR = OMX_VIDEO_PictureTypeVendorStartUnused + 0x1000
+  QOMX_VIDEO_PictureTypeIDR = OMX_VIDEO_PictureTypeVendorStartUnused + 0x1000
 } QOMX_VIDEO_PICTURETYPE;
 
 /**
@@ -549,10 +540,10 @@ typedef enum QOMX_VIDEO_PICTURETYPE {
  *                  allowed.
  */
 typedef struct QOMX_VIDEO_DECODEPICTURETYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_U32 nPictureTypes;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_U32 nPictureTypes;
 } QOMX_VIDEO_DECODEPICTURETYPE;
 
 /**
@@ -568,14 +559,14 @@ typedef struct QOMX_VIDEO_DECODEPICTURETYPE {
  *                 sample
  */
 typedef struct QOMX_VIDEO_SAMPLEASPECTRATIO {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_U16 nWidth;
-    OMX_U16 nHeight;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_U16 nWidth;
+  OMX_U16 nHeight;
 } QOMX_VIDEO_SAMPLEASPECTRATIO;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif /* end of macro __cplusplus */
 

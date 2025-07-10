@@ -32,17 +32,15 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 extern "C" {
 #endif
 
+int FBTest_Initialize(int nFrameWidth,
+                      int nFrameHeight);
+int FBTest_DisplayImage(int nPmemFd, int nOffset);
+int FBTest_Exit();
 
-    int FBTest_Initialize(int nFrameWidth,
-            int nFrameHeight);
-    int FBTest_DisplayImage(int nPmemFd, int nOffset);
-    int FBTest_Exit();
-
-    int FBTest_RunTest();
+int FBTest_RunTest();
 
 #ifdef __cplusplus
 }
 #endif
 
-
-#endif // _FB_TEST_H
+#endif  // _FB_TEST_H

@@ -30,9 +30,9 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef ANDROID_SIDEBAND_HANDLEBASE__H
 #define ANDROID_SIDEBAND_HANDLEBASE__H
 
-#include <utils/Errors.h>
-#include <cutils/native_handle.h>
 #include <cutils/log.h>
+#include <cutils/native_handle.h>
+#include <utils/Errors.h>
 
 // ----------------------------------------------------------------------------
 namespace android {
@@ -44,88 +44,85 @@ namespace android {
 // ----------------------------------------------------------------------------
 
 typedef struct color_data {
-    uint32_t flags;
-    float hue;
-    float saturation;
-    float tone_cb;
-    float tone_cr;
-    float contrast;
-    float brightness;
-}color_data_t;
+  uint32_t flags;
+  float hue;
+  float saturation;
+  float tone_cb;
+  float tone_cr;
+  float contrast;
+  float brightness;
+} color_data_t;
 
 struct SidebandHandleBase : public native_handle {
-public:
-    virtual ~SidebandHandleBase() { };
+ public:
+  virtual ~SidebandHandleBase(){};
 
-    /*Producer use, send captured buffer fd to Consumer*/
-    virtual status_t queueBuffer(int idx) = 0;
+  /*Producer use, send captured buffer fd to Consumer*/
+  virtual status_t queueBuffer(int idx) = 0;
 
-    /*Producer use, get return buffer fd from Consumer */
-    virtual status_t dequeueBuffer(int *idx, uint32_t msInterval) = 0;
+  /*Producer use, get return buffer fd from Consumer */
+  virtual status_t dequeueBuffer(int *idx, uint32_t msInterval) = 0;
 
-    /*Producer use, set setting_data to Consumer */
-    virtual status_t setColorData(color_data_t &color_data) = 0;
+  /*Producer use, set setting_data to Consumer */
+  virtual status_t setColorData(color_data_t &color_data) = 0;
 
-    /*Consumer use, get captured buffer Number */
-    virtual status_t acquireBufferNumb(int *captured_unRead_bufNum) = 0;
+  /*Consumer use, get captured buffer Number */
+  virtual status_t acquireBufferNumb(int *captured_unRead_bufNum) = 0;
 
-    /*Consumer use, get captured buffer fd from Producer*/
-    virtual status_t acquireBuffer(int *idx, uint32_t msInterval) = 0;
+  /*Consumer use, get captured buffer fd from Producer*/
+  virtual status_t acquireBuffer(int *idx, uint32_t msInterval) = 0;
 
-    /*Consumer use, send used buffer fd to Producer*/
-    virtual status_t releaseBuffer(int idx) = 0;
+  /*Consumer use, send used buffer fd to Producer*/
+  virtual status_t releaseBuffer(int idx) = 0;
 
-    /*Consumer use, get setting_data from Producer*/
-    virtual status_t getColorData(color_data_t *color_data) = 0;
+  /*Consumer use, get setting_data from Producer*/
+  virtual status_t getColorData(color_data_t *color_data) = 0;
 
-public:
-    /*Consumer use, get Buffer width*/
-    virtual int getBufferWidth() = 0;
+ public:
+  /*Consumer use, get Buffer width*/
+  virtual int getBufferWidth() = 0;
 
-    /*Consumer use, get Buffer height*/
-    virtual int getBufferHeight() = 0;
+  /*Consumer use, get Buffer height*/
+  virtual int getBufferHeight() = 0;
 
-    /*Consumer use, get Color Format*/
-    virtual int getColorFormat() = 0;
+  /*Consumer use, get Color Format*/
+  virtual int getColorFormat() = 0;
 
-    /*Consumer use, get CompressedUsage*/
-    virtual int getCompressedUsage() = 0;
+  /*Consumer use, get CompressedUsage*/
+  virtual int getCompressedUsage() = 0;
 
-    /*Consumer use, get BufferFd info*/
-    virtual int getBufferFd(int idx) = 0;
+  /*Consumer use, get BufferFd info*/
+  virtual int getBufferFd(int idx) = 0;
 
-    /*Consumer use, set BufferFd info*/
-    virtual int setBufferFd(int idx, int fd) = 0;
+  /*Consumer use, set BufferFd info*/
+  virtual int setBufferFd(int idx, int fd) = 0;
 
-    /*Consumer use, get Buffer Size according color format*/
-    virtual int getBufferSize() = 0;
+  /*Consumer use, get Buffer Size according color format*/
+  virtual int getBufferSize() = 0;
 
-    /*Consumer use, validate native_handle*/
-    static int validate(const native_handle* h)
-    {
-        const SidebandHandleBase* hnd = (const SidebandHandleBase*)h;
-        if (!hnd || hnd->version != sizeof(native_handle) ||
-                hnd->numInts != sNumInts || hnd->numFds != sNumFds ||
-                hnd->data[hnd->numFds] != sMagic)
-        {
-            ALOGE("invalid sideband handle (at %p)", hnd);
-            return -EINVAL;
-        }
-        return 0;
+  /*Consumer use, validate native_handle*/
+  static int validate(const native_handle *h) {
+    const SidebandHandleBase *hnd = (const SidebandHandleBase *)h;
+    if (!hnd || hnd->version != sizeof(native_handle) ||
+        hnd->numInts != sNumInts || hnd->numFds != sNumFds ||
+        hnd->data[hnd->numFds] != sMagic) {
+      ALOGE("invalid sideband handle (at %p)", hnd);
+      return -EINVAL;
     }
+    return 0;
+  }
 
-    /*Consumer use, get sidebandhandle id*/
-    int getSidebandHandleId() const
-    {
-        return data[numFds + 2];
-    }
+  /*Consumer use, get sidebandhandle id*/
+  int getSidebandHandleId() const {
+    return data[numFds + 2];
+  }
 
-protected:
-    static const int sNumFds = 7;
-    static const int sNumInts = 9;
-    static const int sMagic = 0x53424e48; /*SBNH*/
+ protected:
+  static const int sNumFds = 7;
+  static const int sNumInts = 9;
+  static const int sMagic = 0x53424e48; /*SBNH*/
 };
 
 // ----------------------------------------------------------------------------
-}; // namespace android
-#endif // ANDROID_SIDEBAND_HANDLEBASE__H
+};      // namespace android
+#endif  // ANDROID_SIDEBAND_HANDLEBASE__H

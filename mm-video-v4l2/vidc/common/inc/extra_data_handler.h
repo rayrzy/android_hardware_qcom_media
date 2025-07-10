@@ -29,23 +29,24 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __EXTRA_DATA_HANDLER_H__
 #define __EXTRA_DATA_HANDLER_H__
 
-#include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "OMX_QCOMExtns.h"
 #ifndef _TARGET_KERNEL_VERSION_49_
-#include<linux/msm_vidc_dec.h>
-#include<linux/msm_vidc_enc.h>
+#include <linux/msm_vidc_dec.h>
+#include <linux/msm_vidc_enc.h>
 #else
 #include <media/msm_vidc.h>
 #endif
 
 #ifdef _ANDROID_
 extern "C" {
-#include<utils/Log.h>
+#include <utils/Log.h>
 }
-#endif // _ANDROID_
+#endif  // _ANDROID_
 
 #include "vidc_debug.h"
 #define SEI_PAYLOAD_FRAME_PACKING_ARRANGEMENT 0x2D
@@ -65,42 +66,42 @@ extern "C" {
 #define VDEC_EXTRADATA_VC1 0x040
 
 /*Post processing flags bit masks*/
-#define VEN_EXTRADATA_NONE          0x001
-#define VEN_EXTRADATA_QCOMFILLER    0x002
-#define VEN_EXTRADATA_SLICEINFO     0x100
-#define VEN_EXTRADATA_LTRINFO       0x200
-#define VEN_EXTRADATA_MBINFO        0x400
+#define VEN_EXTRADATA_NONE 0x001
+#define VEN_EXTRADATA_QCOMFILLER 0x002
+#define VEN_EXTRADATA_SLICEINFO 0x100
+#define VEN_EXTRADATA_LTRINFO 0x200
+#define VEN_EXTRADATA_MBINFO 0x400
 #endif
 
-class extra_data_handler
-{
-    public:
-        extra_data_handler();
-        ~extra_data_handler();
-        OMX_U32 parse_extra_data(OMX_BUFFERHEADERTYPE *buf_hdr);
-        OMX_U32 create_extra_data(OMX_BUFFERHEADERTYPE *buf_hdr);
-        OMX_U32 get_frame_pack_data(OMX_QCOM_FRAME_PACK_ARRANGEMENT *frame_pack);
-        OMX_U32 set_frame_pack_data(OMX_QCOM_FRAME_PACK_ARRANGEMENT *frame_pack);
-    private:
-        OMX_QCOM_FRAME_PACK_ARRANGEMENT frame_packing_arrangement;
-        OMX_U8 *rbsp_buf;
-        OMX_U32 bit_ptr;
-        OMX_U32 byte_ptr;
-        OMX_U32 pack_sei;
-        OMX_U32 sei_payload_type;
-        OMX_U32 d_u(OMX_U32 num_bits);
-        OMX_U32 d_ue();
-        OMX_U32 parse_frame_pack(void);
-        OMX_S32 parse_rbsp(OMX_U8 *buf, OMX_U32 len);
-        OMX_S32 parse_sei(OMX_U8 *buffer, OMX_U32 buffer_length);
-        OMX_U32 e_u(OMX_U32 symbol, OMX_U32 num_bits);
-        OMX_U32 e_ue(OMX_U32 symbol);
-        OMX_U32 create_frame_pack();
-        OMX_S32 create_rbsp(OMX_U8 *buf, OMX_U32 nalu_type);
-        OMX_U32 create_sei(OMX_U8 *buffer);
-        OMX_S32 parse_sliceinfo(OMX_BUFFERHEADERTYPE *pBufHdr,
-                OMX_OTHER_EXTRADATATYPE *pExtra);
-        OMX_S32 parse_ltrinfo(OMX_OTHER_EXTRADATATYPE *pExtra);
+class extra_data_handler {
+ public:
+  extra_data_handler();
+  ~extra_data_handler();
+  OMX_U32 parse_extra_data(OMX_BUFFERHEADERTYPE *buf_hdr);
+  OMX_U32 create_extra_data(OMX_BUFFERHEADERTYPE *buf_hdr);
+  OMX_U32 get_frame_pack_data(OMX_QCOM_FRAME_PACK_ARRANGEMENT *frame_pack);
+  OMX_U32 set_frame_pack_data(OMX_QCOM_FRAME_PACK_ARRANGEMENT *frame_pack);
+
+ private:
+  OMX_QCOM_FRAME_PACK_ARRANGEMENT frame_packing_arrangement;
+  OMX_U8 *rbsp_buf;
+  OMX_U32 bit_ptr;
+  OMX_U32 byte_ptr;
+  OMX_U32 pack_sei;
+  OMX_U32 sei_payload_type;
+  OMX_U32 d_u(OMX_U32 num_bits);
+  OMX_U32 d_ue();
+  OMX_U32 parse_frame_pack(void);
+  OMX_S32 parse_rbsp(OMX_U8 *buf, OMX_U32 len);
+  OMX_S32 parse_sei(OMX_U8 *buffer, OMX_U32 buffer_length);
+  OMX_U32 e_u(OMX_U32 symbol, OMX_U32 num_bits);
+  OMX_U32 e_ue(OMX_U32 symbol);
+  OMX_U32 create_frame_pack();
+  OMX_S32 create_rbsp(OMX_U8 *buf, OMX_U32 nalu_type);
+  OMX_U32 create_sei(OMX_U8 *buffer);
+  OMX_S32 parse_sliceinfo(OMX_BUFFERHEADERTYPE *pBufHdr,
+                          OMX_OTHER_EXTRADATATYPE *pExtra);
+  OMX_S32 parse_ltrinfo(OMX_OTHER_EXTRADATATYPE *pExtra);
 };
 
 #endif

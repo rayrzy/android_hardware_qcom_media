@@ -31,15 +31,17 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       O p e n M M
          V i d e o   U t i l i t i e s
 
-*//** @file VideoUtils.cpp
-  This module contains utilities and helper routines.
+*/
+/** @file VideoUtils.cpp
+This module contains utilities and helper routines.
 
 @par EXTERNALIZED FUNCTIONS
 
 @par INITIALIZATION AND SEQUENCING REQUIREMENTS
-  (none)
+(none)
 
-*//*====================================================================== */
+*/
+/*====================================================================== */
 
 /* =======================================================================
 
@@ -47,15 +49,16 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ========================================================================== */
 #include "hevc_utils.h"
-#include "vidc_debug.h"
-#include <string.h>
-#include <stdlib.h>
+
 #include <limits.h>
+#include <stdlib.h>
+#include <string.h>
 #include <sys/time.h>
+
+#include "vidc_debug.h"
 #ifdef _ANDROID_
 #include <cutils/properties.h>
 #endif
-
 
 /* =======================================================================
 
@@ -66,13 +69,11 @@ and other items needed by this module.
 
 ========================================================================== */
 
-HEVC_Utils::HEVC_Utils()
-{
-    initialize_frame_checking_environment();
+HEVC_Utils::HEVC_Utils() {
+  initialize_frame_checking_environment();
 }
 
-HEVC_Utils::~HEVC_Utils()
-{
+HEVC_Utils::~HEVC_Utils() {
 }
 
 /***********************************************************************/
@@ -93,11 +94,10 @@ SIDE EFFECTS:
 None.
  */
 /***********************************************************************/
-void HEVC_Utils::initialize_frame_checking_environment()
-{
-    m_forceToStichNextNAL = false;
-    m_au_data = false;
-    nalu_type = NAL_UNIT_INVALID;
+void HEVC_Utils::initialize_frame_checking_environment() {
+  m_forceToStichNextNAL = false;
+  m_au_data = false;
+  nalu_type = NAL_UNIT_INVALID;
 }
 
 /*===========================================================================
@@ -126,96 +126,94 @@ SIDE EFFECTS:
 None.
 ===========================================================================*/
 bool HEVC_Utils::isNewFrame(OMX_BUFFERHEADERTYPE *p_buf_hdr,
-        OMX_IN OMX_U32 size_of_nal_length_field,
-        OMX_OUT OMX_BOOL &isNewFrame)
-{
-    OMX_IN OMX_U8 *buffer = p_buf_hdr->pBuffer;
-    OMX_IN OMX_U32 buffer_length = p_buf_hdr->nFilledLen;
-    byte bFirstSliceInPic = 0;
+                            OMX_IN OMX_U32 size_of_nal_length_field,
+                            OMX_OUT OMX_BOOL &isNewFrame) {
+  OMX_IN OMX_U8 *buffer = p_buf_hdr->pBuffer;
+  OMX_IN OMX_U32 buffer_length = p_buf_hdr->nFilledLen;
+  byte bFirstSliceInPic = 0;
 
-    byte coef1=1, coef2=0, coef3=0;
-    uint32 pos = 0;
-    uint32 nal_len = buffer_length;
-    uint32 sizeofNalLengthField = 0;
-    uint32 zero_count;
-    boolean start_code = (size_of_nal_length_field==0)?true:false;
+  byte coef1 = 1, coef2 = 0, coef3 = 0;
+  uint32 pos = 0;
+  uint32 nal_len = buffer_length;
+  uint32 sizeofNalLengthField = 0;
+  uint32 zero_count;
+  boolean start_code = (size_of_nal_length_field == 0) ? true : false;
 
-    if (start_code) {
-        // Search start_code_prefix_one_3bytes (0x000001)
-        coef2 = buffer[pos++];
-        coef3 = buffer[pos++];
+  if (start_code) {
+    // Search start_code_prefix_one_3bytes (0x000001)
+    coef2 = buffer[pos++];
+    coef3 = buffer[pos++];
 
-        do {
-            if (pos >= buffer_length) {
-                DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
-                return false;
-            }
-
-            coef1 = coef2;
-            coef2 = coef3;
-            coef3 = buffer[pos++];
-        } while (coef1 || coef2 || coef3 != 1);
-    } else if (size_of_nal_length_field) {
-        /* This is the case to play multiple NAL units inside each access unit*/
-        /* Extract the NAL length depending on sizeOfNALength field */
-        sizeofNalLengthField = size_of_nal_length_field;
-        nal_len = 0;
-
-        while (size_of_nal_length_field--) {
-            nal_len |= buffer[pos++]<<(size_of_nal_length_field<<3);
-        }
-
-        if (nal_len >= buffer_length) {
-            DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
-            return false;
-        }
-    }
-
-    if (nal_len > buffer_length) {
+    do {
+      if (pos >= buffer_length) {
         DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
         return false;
+      }
+
+      coef1 = coef2;
+      coef2 = coef3;
+      coef3 = buffer[pos++];
+    } while (coef1 || coef2 || coef3 != 1);
+  } else if (size_of_nal_length_field) {
+    /* This is the case to play multiple NAL units inside each access unit*/
+    /* Extract the NAL length depending on sizeOfNALength field */
+    sizeofNalLengthField = size_of_nal_length_field;
+    nal_len = 0;
+
+    while (size_of_nal_length_field--) {
+      nal_len |= buffer[pos++] << (size_of_nal_length_field << 3);
     }
 
-    if (pos + 2 > (nal_len + sizeofNalLengthField)) {
-        DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
-        return false;
+    if (nal_len >= buffer_length) {
+      DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
+      return false;
+    }
+  }
+
+  if (nal_len > buffer_length) {
+    DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
+    return false;
+  }
+
+  if (pos + 2 > (nal_len + sizeofNalLengthField)) {
+    DEBUG_PRINT_ERROR("ERROR: In %s() - line %d", __func__, __LINE__);
+    return false;
+  }
+
+  nalu_type = (buffer[pos] & 0x7E) >> 1;  //=== nal_unit_type
+
+  DEBUG_PRINT_LOW("@#@# Pos = %x NalType = %x buflen = %u", pos - 1, nalu_type, (unsigned int)buffer_length);
+
+  isNewFrame = OMX_FALSE;
+
+  if (nalu_type == NAL_UNIT_VPS ||
+      nalu_type == NAL_UNIT_SPS ||
+      nalu_type == NAL_UNIT_PPS ||
+      nalu_type == NAL_UNIT_SEI) {
+    DEBUG_PRINT_LOW("Non-AU boundary with NAL type %d", nalu_type);
+
+    if (m_au_data) {
+      isNewFrame = OMX_TRUE;
+      m_au_data = false;
     }
 
-    nalu_type = (buffer[pos] & 0x7E)>>1 ;      //=== nal_unit_type
+    m_forceToStichNextNAL = true;
+  } else if (nalu_type <= NAL_UNIT_RESERVED_23) {
+    DEBUG_PRINT_LOW("AU Boundary with NAL type %d ", nalu_type);
 
-    DEBUG_PRINT_LOW("@#@# Pos = %x NalType = %x buflen = %u", pos-1, nalu_type, (unsigned int) buffer_length);
+    if (!m_forceToStichNextNAL) {
+      bFirstSliceInPic = ((buffer[pos + 2] & 0x80) >> 7);
 
-    isNewFrame =  OMX_FALSE;
-
-    if (nalu_type == NAL_UNIT_VPS ||
-            nalu_type == NAL_UNIT_SPS ||
-            nalu_type == NAL_UNIT_PPS ||
-            nalu_type == NAL_UNIT_SEI) {
-        DEBUG_PRINT_LOW("Non-AU boundary with NAL type %d", nalu_type);
-
-        if (m_au_data) {
-            isNewFrame = OMX_TRUE;
-            m_au_data = false;
-        }
-
-        m_forceToStichNextNAL = true;
-    } else if (nalu_type <= NAL_UNIT_RESERVED_23) {
-        DEBUG_PRINT_LOW("AU Boundary with NAL type %d ", nalu_type);
-
-        if (!m_forceToStichNextNAL) {
-            bFirstSliceInPic = ((buffer[pos+2] & 0x80)>>7);
-
-            if (bFirstSliceInPic) {    //=== first_ctb_in_slice is only 1'b1  coded tree block
-                DEBUG_PRINT_LOW("Found a New Frame due to 1st coded tree block");
-                isNewFrame = OMX_TRUE;
-            }
-        }
-
-        m_au_data = true;
-        m_forceToStichNextNAL = false;
+      if (bFirstSliceInPic) {  //=== first_ctb_in_slice is only 1'b1  coded tree block
+        DEBUG_PRINT_LOW("Found a New Frame due to 1st coded tree block");
+        isNewFrame = OMX_TRUE;
+      }
     }
 
-    DEBUG_PRINT_LOW("get_HEVC_nal_type - newFrame value %d",isNewFrame);
-    return true;
+    m_au_data = true;
+    m_forceToStichNextNAL = false;
+  }
+
+  DEBUG_PRINT_LOW("get_HEVC_nal_type - newFrame value %d", isNewFrame);
+  return true;
 }
-

@@ -28,124 +28,125 @@
  * */
 
 #include "aacEncode.h"
-#include "aacenc_lib.h"
-#include <utils/Log.h>
-#include <string.h>
 
-struct aacInfo
-{
-    AACENC_BufDesc inBuff;
-    AACENC_BufDesc outBuff;
-    AACENC_InArgs  inArg;
-    AACENC_OutArgs outArg;
+#include <string.h>
+#include <utils/Log.h>
+
+#include "aacenc_lib.h"
+
+struct aacInfo {
+  AACENC_BufDesc inBuff;
+  AACENC_BufDesc outBuff;
+  AACENC_InArgs inArg;
+  AACENC_OutArgs outArg;
 };
 
 aacEncode::aacEncode() {
-    p_aacHandle = NULL;
-    p_aacInfo = NULL;
-    memset(&s_aacConfig, 0, sizeof(s_aacConfig));
+  p_aacHandle = NULL;
+  p_aacInfo = NULL;
+  memset(&s_aacConfig, 0, sizeof(s_aacConfig));
 }
 
 aacEncode::~aacEncode() {
-    if(!p_aacHandle) {
-        return;
-    }
+  if (!p_aacHandle) {
+    return;
+  }
 
-    if(aacEncClose((HANDLE_AACENCODER*)(&p_aacHandle)) != AACENC_OK) {
-        ALOGE("aacEncClose Failed");
-        return;
-    }
+  if (aacEncClose((HANDLE_AACENCODER *)(&p_aacHandle)) != AACENC_OK) {
+    ALOGE("aacEncClose Failed");
+    return;
+  }
 }
 
-bool aacEncode::aacConfigure(aacConfigType * p_aacConfig) {
-    if(!p_aacConfig) {
-        return false;
-    }
+bool aacEncode::aacConfigure(aacConfigType *p_aacConfig) {
+  if (!p_aacConfig) {
+    return false;
+  }
 
-    memcpy(&s_aacConfig, p_aacConfig, sizeof(s_aacConfig));
+  memcpy(&s_aacConfig, p_aacConfig, sizeof(s_aacConfig));
 
-    /* Configure AAC encoder here */
+  /* Configure AAC encoder here */
 
-    AACENC_ERROR err = AACENC_OK;
+  AACENC_ERROR err = AACENC_OK;
 
-    p_aacInfo = (void*)new(aacInfo);
-    if(!p_aacInfo) {
-        ALOGE("Failed to allocate aacInfo");
-        return false;
-    }
+  p_aacInfo = (void *)new (aacInfo);
+  if (!p_aacInfo) {
+    ALOGE("Failed to allocate aacInfo");
+    return false;
+  }
 
-    /* Open AAC encoder */
-    err = aacEncOpen((HANDLE_AACENCODER*)(&p_aacHandle),
-                      0x01 /* AAC */,
-                      s_aacConfig.n_channels);
+  /* Open AAC encoder */
+  err = aacEncOpen((HANDLE_AACENCODER *)(&p_aacHandle),
+                   0x01 /* AAC */,
+                   s_aacConfig.n_channels);
 
-    if(err != AACENC_OK) {
-        ALOGE("Failed top open AAC encoder");
-        return false;
-    }
+  if (err != AACENC_OK) {
+    ALOGE("Failed top open AAC encoder");
+    return false;
+  }
 
-    /* Set Bitrate and SampleRate */
-    err = aacEncoder_SetParam((HANDLE_AACENCODER)p_aacHandle,
-                               AACENC_BITRATE,
-                               s_aacConfig.n_bitrate);
+  /* Set Bitrate and SampleRate */
+  err = aacEncoder_SetParam((HANDLE_AACENCODER)p_aacHandle,
+                            AACENC_BITRATE,
+                            s_aacConfig.n_bitrate);
 
-    if(err != AACENC_OK) {
-        ALOGE("Failed to set bitrate param to AAC encoder");
-        return false;
-    }
+  if (err != AACENC_OK) {
+    ALOGE("Failed to set bitrate param to AAC encoder");
+    return false;
+  }
 
-    err = aacEncoder_SetParam((HANDLE_AACENCODER)p_aacHandle,
-                                   AACENC_SAMPLERATE,
-                                   s_aacConfig.n_sampleRate);
+  err = aacEncoder_SetParam((HANDLE_AACENCODER)p_aacHandle,
+                            AACENC_SAMPLERATE,
+                            s_aacConfig.n_sampleRate);
 
-    if(err != AACENC_OK) {
-        ALOGE("Failed to set samplerate param to AAC encoder");
-        return false;
-    }
+  if (err != AACENC_OK) {
+    ALOGE("Failed to set samplerate param to AAC encoder");
+    return false;
+  }
 
-    /* Fix Channel mode and order */
-    /* TODO */
+  /* Fix Channel mode and order */
+  /* TODO */
 
-    /* Prefill encode structures */
-    /* TODO */
+  /* Prefill encode structures */
+  /* TODO */
 
-    return true;
+  return true;
 }
 
-bool aacEncode::aacEncodeFrame(unsigned char * p_inBuffer,
-                              unsigned int n_inSize,
-                              unsigned char * p_outBuffer,
-                              unsigned int n_outSize,
-                              unsigned int * p_length) {
-    (void)n_inSize;
-    (void)n_outSize;
-    (void)p_length;
-    if(!p_inBuffer || !p_outBuffer) {
-        ALOGE("No buffers provided for AAC encoder");
-        return false;
+bool aacEncode::aacEncodeFrame(unsigned char *p_inBuffer,
+                               unsigned int n_inSize,
+                               unsigned char *p_outBuffer,
+                               unsigned int n_outSize,
+                               unsigned int *p_length) {
+  (void)n_inSize;
+  (void)n_outSize;
+  (void)p_length;
+  if (!p_inBuffer || !p_outBuffer) {
+    ALOGE("No buffers provided for AAC encoder");
+    return false;
+  }
+
+  aacInfo *tempAacInfo = (aacInfo *)p_aacInfo;
+  tempAacInfo->inBuff.bufs = (void **)(&p_inBuffer);
+  tempAacInfo->outBuff.bufs = (void **)(&p_outBuffer);
+
+  AACENC_ERROR err = AACENC_OK;
+
+  if (p_aacHandle) {
+    err = aacEncEncode((HANDLE_AACENCODER)p_aacHandle,
+                       &tempAacInfo->inBuff,
+                       &tempAacInfo->outBuff,
+                       &tempAacInfo->inArg,
+                       &tempAacInfo->outArg);
+
+    if (err != AACENC_OK) {
+      ALOGE("Failed to encode buffer");
+      return false;
     }
+  } else {
+    ALOGE("No encoder available");
+    return false;
+  }
 
-    aacInfo *tempAacInfo = (aacInfo*)p_aacInfo;
-    tempAacInfo->inBuff.bufs = (void**) (&p_inBuffer);
-    tempAacInfo->outBuff.bufs = (void**) (&p_outBuffer);
-
-    AACENC_ERROR err = AACENC_OK;
-
-    if(p_aacHandle) {
-        err = aacEncEncode((HANDLE_AACENCODER)p_aacHandle,
-                           &tempAacInfo->inBuff,
-                           &tempAacInfo->outBuff,
-                           &tempAacInfo->inArg,
-                           &tempAacInfo->outArg);
-
-        if(err != AACENC_OK) {
-            ALOGE("Failed to encode buffer");
-            return false;
-        }
-    } else {
-        ALOGE("No encoder available");
-        return false;
-    }
-
-    return true;
+  return true;
 }

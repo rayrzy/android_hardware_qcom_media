@@ -32,6 +32,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <inttypes.h>
 #include <string.h>
+
 #include <string>
 #include <vector>
 
@@ -65,128 +66,129 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *        "ext-dec-picture-order"
  *
  * Overall paramter-key => vendor (dot) extension-name (dot) param-key
-*/
+ */
 struct VendorExtension {
+  /*
+   * Param represents an individual parameter (field) of a VendorExtension.
+   * This is a variant holding values of type [int32, int64 or String].
+   * Each Param has a name (unique within the extension) that is appended
+   * to the 'extension-name' and prefixed with "vendor." to generate the
+   * key that will be exposed to the client.
+   *
+   * Param name(key) - naming convention
+   *   - key must be unique (within the extension)
+   *   - SHOULD not contain "."
+   *   - Keywords seperated by "-" ONLY if required
+   *   Eg: "angle"
+   *       "n-idr-period"
+   *
+   */
+  struct Param {
+    Param(const std::string &name, OMX_ANDROID_VENDOR_VALUETYPE type)
+        : mName(name), mType(type) {}
 
-    /*
-     * Param represents an individual parameter (field) of a VendorExtension.
-     * This is a variant holding values of type [int32, int64 or String].
-     * Each Param has a name (unique within the extension) that is appended
-     * to the 'extension-name' and prefixed with "vendor." to generate the
-     * key that will be exposed to the client.
-     *
-     * Param name(key) - naming convention
-     *   - key must be unique (within the extension)
-     *   - SHOULD not contain "."
-     *   - Keywords seperated by "-" ONLY if required
-     *   Eg: "angle"
-     *       "n-idr-period"
-     *
-     */
-    struct Param {
-        Param (const std::string &name, OMX_ANDROID_VENDOR_VALUETYPE type)
-            : mName(name), mType(type) {}
-
-        const char *name() const {
-            return mName.c_str();
-        }
-        OMX_ANDROID_VENDOR_VALUETYPE type() const {
-            return mType;
-        }
-    private:
-        std::string mName;
-        OMX_ANDROID_VENDOR_VALUETYPE mType;
-    };
-
-    // helper to build a list of variable number or params
-    struct ParamListBuilder {
-        ParamListBuilder (std::initializer_list<Param> l)
-            : mParams(l) {}
-    private:
-        friend struct VendorExtension;
-        std::vector<Param> mParams;
-    };
-
-    VendorExtension(OMX_INDEXTYPE id, const char *name, OMX_DIRTYPE dir,
-            const ParamListBuilder& p);
-
-    // getters
-    OMX_INDEXTYPE extensionIndex() const {
-        return (OMX_INDEXTYPE)mId;
-    }
     const char *name() const {
-        return mName.c_str();
+      return mName.c_str();
     }
-    OMX_U32 paramCount() const {
-        return (OMX_U32)mParams.size();
-    }
-    bool isSet() const {
-        return mIsSet;
+    OMX_ANDROID_VENDOR_VALUETYPE type() const {
+      return mType;
     }
 
-    // (the only) setter
-    void set() const {
-        mIsSet = true;
-    }
-
-    // copy extension Info to OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE* struct passed (except data)
-    OMX_ERRORTYPE copyInfoTo(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext) const;
-
-    // Type-aware data copy methods
-    // (NOTE: data here is passed explicitly to avoid this class having to know all types)
-    // returns true if value was written
-    bool setParamInt32(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
-            OMX_S32 setInt32) const;
-    bool setParamInt64(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
-            OMX_S64 setInt64) const;
-    bool setParamString(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
-            const char *setStr) const;
-
-    // read-values are updated ONLY IF the param[paramIndex] is set by client
-    // returns true if value was read
-    bool readParamInt32(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
-            OMX_S32 *readInt32) const;
-    bool readParamInt64(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
-            OMX_S64 *readInt64) const;
-    bool readParamInt64(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
-            char *readStr) const;
-
-    // Sanity checkers
-    // Check if the extension-name, port-dir, allotted params match
-    //    for each param, check if key and type both match
-    // Must be called to check whether config data provided with setConfig is valid
-    OMX_ERRORTYPE isConfigValid(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext) const;
-
-    // Compare the keys for correct configuration
-    bool isConfigKey(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey) const;
-
-    // utils
-    static const char* typeString(OMX_ANDROID_VENDOR_VALUETYPE type);
-    std::string debugString() const;
-
-private:
-    // Id assigned to the extension
-    OMX_INDEXTYPE mId;
-    // Name of the extension
+   private:
     std::string mName;
-    // Port that this setting applies to
-    OMX_DIRTYPE mPortDir;
-    // parameters required for this extension
+    OMX_ANDROID_VENDOR_VALUETYPE mType;
+  };
+
+  // helper to build a list of variable number or params
+  struct ParamListBuilder {
+    ParamListBuilder(std::initializer_list<Param> l)
+        : mParams(l) {}
+
+   private:
+    friend struct VendorExtension;
     std::vector<Param> mParams;
-    // Flag that indicates client has set this extension.
-    mutable bool mIsSet;
+  };
 
-    // check if the index is valid, name matches, type matches and is set
-    // This must be called to verify config-data passed with setConfig()
-    bool _isParamAccessOK(
-            OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, int paramIndex) const;
+  VendorExtension(OMX_INDEXTYPE id, const char *name, OMX_DIRTYPE dir,
+                  const ParamListBuilder &p);
 
-    // check if the index is valid, check against explicit type
-    bool _isParamAccessTypeOK(
-            OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, int paramIndex,
-            OMX_ANDROID_VENDOR_VALUETYPE type) const;
+  // getters
+  OMX_INDEXTYPE extensionIndex() const {
+    return (OMX_INDEXTYPE)mId;
+  }
+  const char *name() const {
+    return mName.c_str();
+  }
+  OMX_U32 paramCount() const {
+    return (OMX_U32)mParams.size();
+  }
+  bool isSet() const {
+    return mIsSet;
+  }
 
-    int indexOfParam(const char *key) const;
+  // (the only) setter
+  void set() const {
+    mIsSet = true;
+  }
+
+  // copy extension Info to OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE* struct passed (except data)
+  OMX_ERRORTYPE copyInfoTo(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext) const;
+
+  // Type-aware data copy methods
+  // (NOTE: data here is passed explicitly to avoid this class having to know all types)
+  // returns true if value was written
+  bool setParamInt32(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
+                     OMX_S32 setInt32) const;
+  bool setParamInt64(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
+                     OMX_S64 setInt64) const;
+  bool setParamString(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
+                      const char *setStr) const;
+
+  // read-values are updated ONLY IF the param[paramIndex] is set by client
+  // returns true if value was read
+  bool readParamInt32(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
+                      OMX_S32 *readInt32) const;
+  bool readParamInt64(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
+                      OMX_S64 *readInt64) const;
+  bool readParamInt64(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey,
+                      char *readStr) const;
+
+  // Sanity checkers
+  // Check if the extension-name, port-dir, allotted params match
+  //    for each param, check if key and type both match
+  // Must be called to check whether config data provided with setConfig is valid
+  OMX_ERRORTYPE isConfigValid(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext) const;
+
+  // Compare the keys for correct configuration
+  bool isConfigKey(OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, const char *paramKey) const;
+
+  // utils
+  static const char *typeString(OMX_ANDROID_VENDOR_VALUETYPE type);
+  std::string debugString() const;
+
+ private:
+  // Id assigned to the extension
+  OMX_INDEXTYPE mId;
+  // Name of the extension
+  std::string mName;
+  // Port that this setting applies to
+  OMX_DIRTYPE mPortDir;
+  // parameters required for this extension
+  std::vector<Param> mParams;
+  // Flag that indicates client has set this extension.
+  mutable bool mIsSet;
+
+  // check if the index is valid, name matches, type matches and is set
+  // This must be called to verify config-data passed with setConfig()
+  bool _isParamAccessOK(
+      OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, int paramIndex) const;
+
+  // check if the index is valid, check against explicit type
+  bool _isParamAccessTypeOK(
+      OMX_CONFIG_ANDROID_VENDOR_EXTENSIONTYPE *ext, int paramIndex,
+      OMX_ANDROID_VENDOR_VALUETYPE type) const;
+
+  int indexOfParam(const char *key) const;
 };
 
 /*
@@ -196,37 +198,37 @@ private:
  * -whether the extension was set by the Client
  */
 struct VendorExtensionStore {
-    VendorExtensionStore()
-        : mInvalid(VendorExtension((OMX_INDEXTYPE)-1, "invalid", OMX_DirMax, {{}})) {
-    }
+  VendorExtensionStore()
+      : mInvalid(VendorExtension((OMX_INDEXTYPE)-1, "invalid", OMX_DirMax, {{}})) {
+  }
 
-    VendorExtensionStore(const VendorExtensionStore&) = delete;
-    VendorExtensionStore& operator= (const VendorExtensionStore&) = delete;
+  VendorExtensionStore(const VendorExtensionStore &) = delete;
+  VendorExtensionStore &operator=(const VendorExtensionStore &) = delete;
 
-    void add(const VendorExtension& _e) {
-        mExt.push_back(_e);
-    }
-    const VendorExtension& operator[] (OMX_U32 index) const {
-        return index < mExt.size() ? mExt[index] : mInvalid;
-    }
-    OMX_U32 size() const {
-        return mExt.size();
-    }
-    void dumpExtensions(const char *prefix) const;
+  void add(const VendorExtension &_e) {
+    mExt.push_back(_e);
+  }
+  const VendorExtension &operator[](OMX_U32 index) const {
+    return index < mExt.size() ? mExt[index] : mInvalid;
+  }
+  OMX_U32 size() const {
+    return mExt.size();
+  }
+  void dumpExtensions(const char *prefix) const;
 
-private:
-    std::vector<VendorExtension> mExt;
-    VendorExtension mInvalid;
+ private:
+  std::vector<VendorExtension> mExt;
+  VendorExtension mInvalid;
 };
 
 // Macros to help add extensions
-#define ADD_EXTENSION(_name, _extIndex, _dir)                                   \
-    store.add(VendorExtension((OMX_INDEXTYPE)_extIndex, _name, _dir, {          \
+#define ADD_EXTENSION(_name, _extIndex, _dir) \
+    store.add(VendorExtension((OMX_INDEXTYPE)_extIndex, _name, _dir, {
+#define ADD_PARAM(_key, _type) \
+  {_key, _type},
 
-#define ADD_PARAM(_key, _type)                                                             \
-    {_key, _type},
+#define ADD_PARAM_END(_key, _type) \
+  { _key, _type }                  \
+  }));
 
-#define ADD_PARAM_END(_key, _type)                                                             \
-    {_key, _type} }));
-
-#endif // _VIDC_VENDOR_ENXTENSIONS_H_
+#endif  // _VIDC_VENDOR_ENXTENSIONS_H_

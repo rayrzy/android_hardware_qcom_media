@@ -32,28 +32,20 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   This module contains a dummy registry table for the QCOM's OpenMAX core
   with placeholders for actual values
 
-*//*========================================================================*/
-
+*/
+/*========================================================================*/
 
 #include "qc_omx_core.h"
 
 omx_core_cb_type core[] =
-{
-  {
-    "OMX.qcom.xxx.yyy.zzz",
-    NULL, // Create instance function
-    // Unique instance handle
     {
-      NULL
-    },
-    NULL,   // Shared object library handle
-    "abc.so",
-    {
-      "efg.ijk"
-    }
-  }
-};
+        {"OMX.qcom.xxx.yyy.zzz",
+         NULL,  // Create instance function
+         // Unique instance handle
+         {
+             NULL},
+         NULL,  // Shared object library handle
+         "abc.so",
+         {"efg.ijk"}}};
 
 const unsigned int SIZE_OF_CORE = sizeof(core) / sizeof(omx_core_cb_type);
-
-

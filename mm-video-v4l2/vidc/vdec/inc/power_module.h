@@ -30,13 +30,13 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <hardware/power.h>
 
-class PowerModule
-{
-    public:
-        static PowerModule *getInstance();
-        power_module_t *getPowerModuleHandle();
-    private:
-        static PowerModule *mPowerModuleInstance;
-        power_module_t *mPowerModuleHandle;
-        PowerModule() {}
+class PowerModule {
+ public:
+  static PowerModule *getInstance();
+  power_module_t *getPowerModuleHandle();
+
+ private:
+  static PowerModule *mPowerModuleInstance;
+  power_module_t *mPowerModuleHandle;
+  PowerModule() {}
 };

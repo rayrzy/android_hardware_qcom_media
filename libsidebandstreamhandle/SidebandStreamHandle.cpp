@@ -29,59 +29,58 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #define LOG_TAG "SidebandStreamHandle"
 
+#include "SidebandStreamHandle.h"
+
 #include <string.h>
 #include <utils/Log.h>
 
-#include "SidebandStreamHandle.h"
-
 namespace android {
 
-SidebandStreamHandle::SidebandStreamHandle(){
-    mLibHandle = NULL;
-    mHandleProducer = NULL;
-    mHandleConsumer = NULL;
+SidebandStreamHandle::SidebandStreamHandle() {
+  mLibHandle = NULL;
+  mHandleProducer = NULL;
+  mHandleConsumer = NULL;
 }
 
-bool SidebandStreamHandle::init(){
-    bool status = true;
-    if (mLibHandle || mHandleProducer || mHandleConsumer) {
-        ALOGE("SidebandStreamHandle::init called twice\n");
-        status = false;
-    }
+bool SidebandStreamHandle::init() {
+  bool status = true;
+  if (mLibHandle || mHandleProducer || mHandleConsumer) {
+    ALOGE("SidebandStreamHandle::init called twice\n");
+    status = false;
+  }
 
-    if(status){
-        mLibHandle = dlopen(SIDEBAND_LIBRARY, RTLD_NOW);
+  if (status) {
+    mLibHandle = dlopen(SIDEBAND_LIBRARY, RTLD_NOW);
 
-        if(mLibHandle) {
-            mHandleProducer = (CreateSidebandStreamHandleProducer_t *)
-                dlsym(mLibHandle, "CreateSidebandStreamHandleProducer");
-            mHandleConsumer = (CreateSidebandStreamHandleConsumer_t *)
-                dlsym(mLibHandle, "CreateSidebandStreamHandleConsumer");
-            if (!mHandleProducer || !mHandleConsumer)
-                status = false;
-        }else
-            status = false;
-        }
-
-    if (!status && mLibHandle) {
-        dlclose(mLibHandle);
-        mLibHandle = NULL;
-        mHandleProducer = NULL;
-        mHandleConsumer = NULL;
-    }
-    return status;
-}
-
-void SidebandStreamHandle::destroy()
-{
-    ALOGI("SidebandStreamHandle::destroy\n");
     if (mLibHandle) {
-        dlclose(mLibHandle);
-    }
+      mHandleProducer = (CreateSidebandStreamHandleProducer_t *)
+          dlsym(mLibHandle, "CreateSidebandStreamHandleProducer");
+      mHandleConsumer = (CreateSidebandStreamHandleConsumer_t *)
+          dlsym(mLibHandle, "CreateSidebandStreamHandleConsumer");
+      if (!mHandleProducer || !mHandleConsumer)
+        status = false;
+    } else
+      status = false;
+  }
 
+  if (!status && mLibHandle) {
+    dlclose(mLibHandle);
     mLibHandle = NULL;
     mHandleProducer = NULL;
     mHandleConsumer = NULL;
+  }
+  return status;
 }
 
-};  //namespace android
+void SidebandStreamHandle::destroy() {
+  ALOGI("SidebandStreamHandle::destroy\n");
+  if (mLibHandle) {
+    dlclose(mLibHandle);
+  }
+
+  mLibHandle = NULL;
+  mHandleProducer = NULL;
+  mHandleConsumer = NULL;
+}
+
+};  // namespace android

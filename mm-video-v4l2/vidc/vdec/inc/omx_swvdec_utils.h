@@ -39,107 +39,105 @@
 #ifndef _OMX_SWVDEC_UTILS_H_
 #define _OMX_SWVDEC_UTILS_H_
 
-#include <queue>
 #include <pthread.h>
-
 #include <utils/Log.h>
 
+#include <queue>
+
 extern unsigned int g_omx_swvdec_logmask;
-                      ///< global OMX SwVdec logmask variable extern declaration
+///< global OMX SwVdec logmask variable extern declaration
 
 void omx_swvdec_log_init();
 
-#define OMX_SWVDEC_LOGMASK_LOW   4 ///< 100: logmask for low priority logs
-#define OMX_SWVDEC_LOGMASK_HIGH  2 ///< 010: logmask for high priority logs
-#define OMX_SWVDEC_LOGMASK_ERROR 1 ///< 001: logmask for error priority logs
+#define OMX_SWVDEC_LOGMASK_LOW 4    ///< 100: logmask for low priority logs
+#define OMX_SWVDEC_LOGMASK_HIGH 2   ///< 010: logmask for high priority logs
+#define OMX_SWVDEC_LOGMASK_ERROR 1  ///< 001: logmask for error priority logs
 
 #ifdef LOG_TAG
 #undef LOG_TAG
 #endif
-#define LOG_TAG "OMX_SWVDEC" ///< OMX SwVdec log tag
+#define LOG_TAG "OMX_SWVDEC"  ///< OMX SwVdec log tag
 
 /// low priority log message
-#define OMX_SWVDEC_LOG_LOW(string, ...)                              \
-    do {                                                             \
-        if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_LOW)           \
-            ALOGD("--- %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
-    } while (0)
+#define OMX_SWVDEC_LOG_LOW(string, ...)                        \
+  do {                                                         \
+    if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_LOW)         \
+      ALOGD("--- %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
+  } while (0)
 
 /// high priority log message
-#define OMX_SWVDEC_LOG_HIGH(string, ...)                             \
-    do {                                                             \
-        if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_HIGH)          \
-            ALOGI("--- %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
-    } while (0)
+#define OMX_SWVDEC_LOG_HIGH(string, ...)                       \
+  do {                                                         \
+    if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_HIGH)        \
+      ALOGI("--- %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
+  } while (0)
 
 /// error priority log message
-#define OMX_SWVDEC_LOG_ERROR(string, ...)                            \
-    do {                                                             \
-        if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_ERROR)         \
-            ALOGE("!!! %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
-    } while (0)
+#define OMX_SWVDEC_LOG_ERROR(string, ...)                      \
+  do {                                                         \
+    if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_ERROR)       \
+      ALOGE("!!! %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
+  } while (0)
 
 /// high priority log message for OMX SwVdec API calls
-#define OMX_SWVDEC_LOG_API(string, ...)                              \
-    do {                                                             \
-        if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_HIGH)          \
-            ALOGI(">>> %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
-    } while (0)
+#define OMX_SWVDEC_LOG_API(string, ...)                        \
+  do {                                                         \
+    if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_HIGH)        \
+      ALOGI(">>> %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
+  } while (0)
 
 /// high priority log message for OMX SwVdec callbacks
-#define OMX_SWVDEC_LOG_CALLBACK(string, ...)                         \
-    do {                                                             \
-        if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_HIGH)          \
-            ALOGI("<<< %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
-    } while (0)
+#define OMX_SWVDEC_LOG_CALLBACK(string, ...)                   \
+  do {                                                         \
+    if (g_omx_swvdec_logmask & OMX_SWVDEC_LOGMASK_HIGH)        \
+      ALOGI("<<< %s(): " string, __FUNCTION__, ##__VA_ARGS__); \
+  } while (0)
 
 /// OMX SwVdec event information structure
 typedef struct {
-    unsigned long event_id;     ///< event ID
-    unsigned long event_param1; ///< event parameter 1
-    unsigned long event_param2; ///< event parameter 2
+  unsigned long event_id;      ///< event ID
+  unsigned long event_param1;  ///< event parameter 1
+  unsigned long event_param2;  ///< event parameter 2
 } OMX_SWVDEC_EVENT_INFO;
 
 /// OMX SwVdec queue class
-class omx_swvdec_queue
-{
-public:
-    omx_swvdec_queue();
-    ~omx_swvdec_queue();
+class omx_swvdec_queue {
+ public:
+  omx_swvdec_queue();
+  ~omx_swvdec_queue();
 
-    void push(OMX_SWVDEC_EVENT_INFO *p_event_info);
-    bool pop(OMX_SWVDEC_EVENT_INFO *p_event_info);
+  void push(OMX_SWVDEC_EVENT_INFO *p_event_info);
+  bool pop(OMX_SWVDEC_EVENT_INFO *p_event_info);
 
-private:
-    std::queue<OMX_SWVDEC_EVENT_INFO> m_queue; ///< queue
-    pthread_mutex_t                   m_mutex; ///< mutex
+ private:
+  std::queue<OMX_SWVDEC_EVENT_INFO> m_queue;  ///< queue
+  pthread_mutex_t m_mutex;                    ///< mutex
 };
 
-#define DIAG_FILE_PATH "/data/vendor/media" ///< file path
+#define DIAG_FILE_PATH "/data/vendor/media"  ///< file path
 
 /// OMX SwVdec diagnostics class
-class omx_swvdec_diag
-{
-public:
-    omx_swvdec_diag();
-    ~omx_swvdec_diag();
+class omx_swvdec_diag {
+ public:
+  omx_swvdec_diag();
+  ~omx_swvdec_diag();
 
-    void dump_ip(unsigned char *p_buffer, unsigned int filled_length);
-    void dump_op(unsigned char *p_buffer,
-                 unsigned int   width,
-                 unsigned int   height,
-                 unsigned int   stride,
-                 unsigned int   scanlines);
+  void dump_ip(unsigned char *p_buffer, unsigned int filled_length);
+  void dump_op(unsigned char *p_buffer,
+               unsigned int width,
+               unsigned int height,
+               unsigned int stride,
+               unsigned int scanlines);
 
-private:
-    unsigned int m_dump_ip; ///< dump  input bitstream
-    unsigned int m_dump_op; ///< dump output YUV
+ private:
+  unsigned int m_dump_ip;  ///< dump  input bitstream
+  unsigned int m_dump_op;  ///< dump output YUV
 
-    char *m_filename_ip; ///<  input filename string
-    char *m_filename_op; ///< output filename string
+  char *m_filename_ip;  ///<  input filename string
+  char *m_filename_op;  ///< output filename string
 
-    FILE *m_file_ip; ///<  input file handle
-    FILE *m_file_op; ///< output file handle
+  FILE *m_file_ip;  ///<  input file handle
+  FILE *m_file_op;  ///< output file handle
 };
 
-#endif // #ifndef _OMX_SWVDEC_UTILS_H_
+#endif  // #ifndef _OMX_SWVDEC_UTILS_H_

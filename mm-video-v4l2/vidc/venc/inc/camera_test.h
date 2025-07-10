@@ -36,20 +36,18 @@ EXTERN_C_START
 #endif
 
 typedef void (*CameraPreviewCallback)(int nFD,
-        int nOffset,
-        void* pPhys,
-        void* pVirt,
-        long long nTimeStamp);
-
+                                      int nOffset,
+                                      void* pPhys,
+                                      void* pVirt,
+                                      long long nTimeStamp);
 
 int CameraTest_Initialize(int nFrameRate,
-        int nFrameWidth,
-        int nFrameHeight,
-        CameraPreviewCallback pfnPreviewCallback);
+                          int nFrameWidth,
+                          int nFrameHeight,
+                          CameraPreviewCallback pfnPreviewCallback);
 int CameraTest_Run();
 int CameraTest_ReleaseFrame(void* pPhys, void* pVirt);
 int CameraTest_Exit();
-
 
 #ifdef __cplusplus
 EXTERN_C_END

@@ -39,122 +39,115 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef OMX_CORE_CMP_H
 #define OMX_CORE_CMP_H
 
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-
-void * qc_omx_create_component_wrapper(OMX_PTR obj_ptr);
-
+void* qc_omx_create_component_wrapper(OMX_PTR obj_ptr);
 
 OMX_ERRORTYPE
 qc_omx_component_init(OMX_IN OMX_HANDLETYPE hComp, OMX_IN OMX_STRING componentName);
 
-
 OMX_ERRORTYPE
-qc_omx_component_get_version(OMX_IN OMX_HANDLETYPE               hComp,
-                             OMX_OUT OMX_STRING          componentName,
+qc_omx_component_get_version(OMX_IN OMX_HANDLETYPE hComp,
+                             OMX_OUT OMX_STRING componentName,
                              OMX_OUT OMX_VERSIONTYPE* componentVersion,
-                             OMX_OUT OMX_VERSIONTYPE*      specVersion,
-                             OMX_OUT OMX_UUIDTYPE*       componentUUID);
+                             OMX_OUT OMX_VERSIONTYPE* specVersion,
+                             OMX_OUT OMX_UUIDTYPE* componentUUID);
 
 OMX_ERRORTYPE
 qc_omx_component_send_command(OMX_IN OMX_HANDLETYPE hComp,
-                              OMX_IN OMX_COMMANDTYPE  cmd,
-                              OMX_IN OMX_U32       param1,
-                              OMX_IN OMX_PTR      cmdData);
+                              OMX_IN OMX_COMMANDTYPE cmd,
+                              OMX_IN OMX_U32 param1,
+                              OMX_IN OMX_PTR cmdData);
 
 OMX_ERRORTYPE
-qc_omx_component_get_parameter(OMX_IN OMX_HANDLETYPE     hComp,
+qc_omx_component_get_parameter(OMX_IN OMX_HANDLETYPE hComp,
                                OMX_IN OMX_INDEXTYPE paramIndex,
-                               OMX_INOUT OMX_PTR     paramData);
+                               OMX_INOUT OMX_PTR paramData);
 
 OMX_ERRORTYPE
-qc_omx_component_set_parameter(OMX_IN OMX_HANDLETYPE     hComp,
+qc_omx_component_set_parameter(OMX_IN OMX_HANDLETYPE hComp,
                                OMX_IN OMX_INDEXTYPE paramIndex,
-                               OMX_IN OMX_PTR        paramData);
+                               OMX_IN OMX_PTR paramData);
 
 OMX_ERRORTYPE
-qc_omx_component_get_config(OMX_IN OMX_HANDLETYPE      hComp,
-          OMX_IN OMX_INDEXTYPE configIndex,
-          OMX_INOUT OMX_PTR     configData);
-
-OMX_ERRORTYPE
-qc_omx_component_set_config(OMX_IN OMX_HANDLETYPE      hComp,
+qc_omx_component_get_config(OMX_IN OMX_HANDLETYPE hComp,
                             OMX_IN OMX_INDEXTYPE configIndex,
-                            OMX_IN OMX_PTR        configData);
+                            OMX_INOUT OMX_PTR configData);
 
 OMX_ERRORTYPE
-qc_omx_component_get_extension_index(OMX_IN OMX_HANDLETYPE      hComp,
-                                     OMX_IN OMX_STRING      paramName,
+qc_omx_component_set_config(OMX_IN OMX_HANDLETYPE hComp,
+                            OMX_IN OMX_INDEXTYPE configIndex,
+                            OMX_IN OMX_PTR configData);
+
+OMX_ERRORTYPE
+qc_omx_component_get_extension_index(OMX_IN OMX_HANDLETYPE hComp,
+                                     OMX_IN OMX_STRING paramName,
                                      OMX_OUT OMX_INDEXTYPE* indexType);
 
 OMX_ERRORTYPE
-qc_omx_component_get_state(OMX_IN OMX_HANDLETYPE  hComp,
+qc_omx_component_get_state(OMX_IN OMX_HANDLETYPE hComp,
                            OMX_OUT OMX_STATETYPE* state);
 
 OMX_ERRORTYPE
-qc_omx_component_tunnel_request(OMX_IN OMX_HANDLETYPE                hComp,
-                                OMX_IN OMX_U32                        port,
-                                OMX_IN OMX_HANDLETYPE        peerComponent,
-                                OMX_IN OMX_U32                    peerPort,
+qc_omx_component_tunnel_request(OMX_IN OMX_HANDLETYPE hComp,
+                                OMX_IN OMX_U32 port,
+                                OMX_IN OMX_HANDLETYPE peerComponent,
+                                OMX_IN OMX_U32 peerPort,
                                 OMX_INOUT OMX_TUNNELSETUPTYPE* tunnelSetup);
 
 OMX_ERRORTYPE
-qc_omx_component_use_buffer(OMX_IN OMX_HANDLETYPE                hComp,
+qc_omx_component_use_buffer(OMX_IN OMX_HANDLETYPE hComp,
                             OMX_INOUT OMX_BUFFERHEADERTYPE** bufferHdr,
-                            OMX_IN OMX_U32                        port,
-                            OMX_IN OMX_PTR                     appData,
-                            OMX_IN OMX_U32                       bytes,
-                            OMX_IN OMX_U8*                      buffer);
-
+                            OMX_IN OMX_U32 port,
+                            OMX_IN OMX_PTR appData,
+                            OMX_IN OMX_U32 bytes,
+                            OMX_IN OMX_U8* buffer);
 
 // qc_omx_component_allocate_buffer  -- API Call
 OMX_ERRORTYPE
-qc_omx_component_allocate_buffer(OMX_IN OMX_HANDLETYPE                hComp,
+qc_omx_component_allocate_buffer(OMX_IN OMX_HANDLETYPE hComp,
                                  OMX_INOUT OMX_BUFFERHEADERTYPE** bufferHdr,
-                                 OMX_IN OMX_U32                        port,
-                                 OMX_IN OMX_PTR                     appData,
-                                 OMX_IN OMX_U32                       bytes);
+                                 OMX_IN OMX_U32 port,
+                                 OMX_IN OMX_PTR appData,
+                                 OMX_IN OMX_U32 bytes);
 
 OMX_ERRORTYPE
-qc_omx_component_free_buffer(OMX_IN OMX_HANDLETYPE         hComp,
-                             OMX_IN OMX_U32                 port,
+qc_omx_component_free_buffer(OMX_IN OMX_HANDLETYPE hComp,
+                             OMX_IN OMX_U32 port,
                              OMX_IN OMX_BUFFERHEADERTYPE* buffer);
 
 OMX_ERRORTYPE
-qc_omx_component_empty_this_buffer(OMX_IN OMX_HANDLETYPE         hComp,
+qc_omx_component_empty_this_buffer(OMX_IN OMX_HANDLETYPE hComp,
                                    OMX_IN OMX_BUFFERHEADERTYPE* buffer);
 
 OMX_ERRORTYPE
-qc_omx_component_fill_this_buffer(OMX_IN OMX_HANDLETYPE         hComp,
+qc_omx_component_fill_this_buffer(OMX_IN OMX_HANDLETYPE hComp,
                                   OMX_IN OMX_BUFFERHEADERTYPE* buffer);
 
 OMX_ERRORTYPE
-qc_omx_component_set_callbacks(OMX_IN OMX_HANDLETYPE        hComp,
+qc_omx_component_set_callbacks(OMX_IN OMX_HANDLETYPE hComp,
                                OMX_IN OMX_CALLBACKTYPE* callbacks,
-                               OMX_IN OMX_PTR             appData);
+                               OMX_IN OMX_PTR appData);
 
 OMX_ERRORTYPE
 qc_omx_component_deinit(OMX_IN OMX_HANDLETYPE hComp);
 
 OMX_ERRORTYPE
-qc_omx_component_use_EGL_image(OMX_IN OMX_HANDLETYPE                hComp,
+qc_omx_component_use_EGL_image(OMX_IN OMX_HANDLETYPE hComp,
                                OMX_INOUT OMX_BUFFERHEADERTYPE** bufferHdr,
-                               OMX_IN OMX_U32                        port,
-                               OMX_IN OMX_PTR                     appData,
-                               OMX_IN void*                      eglImage);
+                               OMX_IN OMX_U32 port,
+                               OMX_IN OMX_PTR appData,
+                               OMX_IN void* eglImage);
 
 OMX_ERRORTYPE
 qc_omx_component_role_enum(OMX_IN OMX_HANDLETYPE hComp,
-                           OMX_OUT OMX_U8*        role,
-                           OMX_IN OMX_U32        index);
+                           OMX_OUT OMX_U8* role,
+                           OMX_IN OMX_U32 index);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-

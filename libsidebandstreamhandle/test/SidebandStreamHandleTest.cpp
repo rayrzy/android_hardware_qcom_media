@@ -27,10 +27,10 @@ OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
 IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --------------------------------------------------------------------------*/
 
-#include <stdio.h>
-#include <sys/time.h>
 #include <dlfcn.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <sys/time.h>
 #include <unistd.h>
 
 #include "SidebandStreamHandle.h"
@@ -46,81 +46,79 @@ int compressed_usage = 0;
 SidebandHandleBase *mSidebandHandleBaseProducer;
 SidebandHandleBase *mSidebandHandleBaseConsumer;
 
-int testProducer(SidebandStreamHandle *mSidebandStreamHandle){
-    mSidebandHandleBaseProducer = mSidebandStreamHandle->mHandleProducer(bufferWidth, bufferHeight, color_format, compressed_usage);
-    printf("testProducer: Get bufferWidth=%d, bufferHeight=%d, color_format=%d, compressed_usage=%d, sidebandhandle_id=%d\n",
-        mSidebandHandleBaseProducer->getBufferWidth(), mSidebandHandleBaseProducer->getBufferHeight(), mSidebandHandleBaseProducer->getColorFormat(),
-        mSidebandHandleBaseProducer->getCompressedUsage(), mSidebandHandleBaseProducer->getSidebandHandleId());
+int testProducer(SidebandStreamHandle *mSidebandStreamHandle) {
+  mSidebandHandleBaseProducer = mSidebandStreamHandle->mHandleProducer(bufferWidth, bufferHeight, color_format, compressed_usage);
+  printf("testProducer: Get bufferWidth=%d, bufferHeight=%d, color_format=%d, compressed_usage=%d, sidebandhandle_id=%d\n",
+         mSidebandHandleBaseProducer->getBufferWidth(), mSidebandHandleBaseProducer->getBufferHeight(), mSidebandHandleBaseProducer->getColorFormat(),
+         mSidebandHandleBaseProducer->getCompressedUsage(), mSidebandHandleBaseProducer->getSidebandHandleId());
 
-    if((mSidebandHandleBaseProducer->getBufferWidth()==bufferWidth)&&(mSidebandHandleBaseProducer->getBufferHeight()==bufferHeight)&&
-        (mSidebandHandleBaseProducer->getColorFormat()==color_format)&&(mSidebandHandleBaseProducer->getCompressedUsage()==compressed_usage)){
-        return 0;
-    }else{
-        return -1;
-    }
-}
-
-int testConsumer(SidebandStreamHandle *mSidebandStreamHandle){
-//on real case the mSidebandHandleBaseProducer will be transfered by setsidebandstream() on framework.
-//1. validate received sideband handle first
-    if(SidebandHandleBase::validate((native_handle *)mSidebandHandleBaseProducer)!=0){
-        printf("testConsumer: invalidate mSidebandHandleBaseProducer sideband handle\n");
-        return -1;
-    }
-//2. create your own sideband handle by received sideband handle
-    SidebandHandleBase *mSidebandHandleBaseConsumer = mSidebandStreamHandle->mHandleConsumer((native_handle *)mSidebandHandleBaseProducer);
-
-//3. validate your own sideband handle
-    if(SidebandHandleBase::validate((native_handle *)mSidebandHandleBaseConsumer)!=0){
-        printf("testConsumer: invalidate mSidebandHandleBaseConsumer sideband handle\n");
-        return -1;
-    }
-
-//4. get all the values from the sideband handle
-    printf("testConsumer: Get bufferWidth=%d, bufferHeight=%d, color_format=%d, compressed_usage=%d, sidebandhandle_id=%d\n",
-        mSidebandHandleBaseConsumer->getBufferWidth(), mSidebandHandleBaseConsumer->getBufferHeight(), mSidebandHandleBaseConsumer->getColorFormat(),
-        mSidebandHandleBaseConsumer->getCompressedUsage(), mSidebandHandleBaseConsumer->getSidebandHandleId());
-
-    if((mSidebandHandleBaseConsumer->getBufferWidth()==bufferWidth)&&(mSidebandHandleBaseConsumer->getBufferHeight()==bufferHeight)&&
-        (mSidebandHandleBaseConsumer->getColorFormat()==color_format)&&(mSidebandHandleBaseConsumer->getCompressedUsage()==compressed_usage)){
-        return 0;
-    }else{
-        return -1;
-    }
-}
-
-
-int main ()
-{
-    int ret = 0;
-
-    //used for open the libsideband.so and link the relative api
-    SidebandStreamHandle *mSidebandStreamHandle = new SidebandStreamHandle();
-    mSidebandStreamHandle->init();
-
-    //For mm-avinput reference
-    ret = testProducer(mSidebandStreamHandle);
-    if(ret == 0){
-        printf("testProducer successful!\n");
-    }else{
-        printf("testProducer failed!\n");
-    }
-
-    //For display reference.
-    ret = testConsumer(mSidebandStreamHandle);
-    if(ret == 0){
-        printf("testProducer successful!\n");
-    }else{
-        printf("testProducer failed!\n");
-    }
-
-    delete mSidebandHandleBaseConsumer;
-    delete mSidebandHandleBaseProducer;
-
-    mSidebandStreamHandle->destroy();
-    delete mSidebandStreamHandle;
-
-    printf("test finish!\n");
-
+  if ((mSidebandHandleBaseProducer->getBufferWidth() == bufferWidth) && (mSidebandHandleBaseProducer->getBufferHeight() == bufferHeight) &&
+      (mSidebandHandleBaseProducer->getColorFormat() == color_format) && (mSidebandHandleBaseProducer->getCompressedUsage() == compressed_usage)) {
     return 0;
+  } else {
+    return -1;
+  }
+}
+
+int testConsumer(SidebandStreamHandle *mSidebandStreamHandle) {
+  // on real case the mSidebandHandleBaseProducer will be transfered by setsidebandstream() on framework.
+  // 1. validate received sideband handle first
+  if (SidebandHandleBase::validate((native_handle *)mSidebandHandleBaseProducer) != 0) {
+    printf("testConsumer: invalidate mSidebandHandleBaseProducer sideband handle\n");
+    return -1;
+  }
+  // 2. create your own sideband handle by received sideband handle
+  SidebandHandleBase *mSidebandHandleBaseConsumer = mSidebandStreamHandle->mHandleConsumer((native_handle *)mSidebandHandleBaseProducer);
+
+  // 3. validate your own sideband handle
+  if (SidebandHandleBase::validate((native_handle *)mSidebandHandleBaseConsumer) != 0) {
+    printf("testConsumer: invalidate mSidebandHandleBaseConsumer sideband handle\n");
+    return -1;
+  }
+
+  // 4. get all the values from the sideband handle
+  printf("testConsumer: Get bufferWidth=%d, bufferHeight=%d, color_format=%d, compressed_usage=%d, sidebandhandle_id=%d\n",
+         mSidebandHandleBaseConsumer->getBufferWidth(), mSidebandHandleBaseConsumer->getBufferHeight(), mSidebandHandleBaseConsumer->getColorFormat(),
+         mSidebandHandleBaseConsumer->getCompressedUsage(), mSidebandHandleBaseConsumer->getSidebandHandleId());
+
+  if ((mSidebandHandleBaseConsumer->getBufferWidth() == bufferWidth) && (mSidebandHandleBaseConsumer->getBufferHeight() == bufferHeight) &&
+      (mSidebandHandleBaseConsumer->getColorFormat() == color_format) && (mSidebandHandleBaseConsumer->getCompressedUsage() == compressed_usage)) {
+    return 0;
+  } else {
+    return -1;
+  }
+}
+
+int main() {
+  int ret = 0;
+
+  // used for open the libsideband.so and link the relative api
+  SidebandStreamHandle *mSidebandStreamHandle = new SidebandStreamHandle();
+  mSidebandStreamHandle->init();
+
+  // For mm-avinput reference
+  ret = testProducer(mSidebandStreamHandle);
+  if (ret == 0) {
+    printf("testProducer successful!\n");
+  } else {
+    printf("testProducer failed!\n");
+  }
+
+  // For display reference.
+  ret = testConsumer(mSidebandStreamHandle);
+  if (ret == 0) {
+    printf("testProducer successful!\n");
+  } else {
+    printf("testProducer failed!\n");
+  }
+
+  delete mSidebandHandleBaseConsumer;
+  delete mSidebandHandleBaseProducer;
+
+  mSidebandStreamHandle->destroy();
+  delete mSidebandStreamHandle;
+
+  printf("test finish!\n");
+
+  return 0;
 }

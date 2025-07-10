@@ -28,51 +28,45 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include<pthread.h>
+#include <pthread.h>
 #include <semaphore.h>
 #include <stdio.h>
 #include <string.h>
 
 /* Message Queue structure */
 struct video_msgq {
-    /* Command to be executed */
-    unsigned int cmd;
+  /* Command to be executed */
+  unsigned int cmd;
 
-    unsigned int status;
+  unsigned int status;
 
-    /* Client-specific data */
-    void *clientdata;
+  /* Client-specific data */
+  void *clientdata;
 };
-
 
 /* Thread & Message Queue information */
 struct video_queue_context {
-    /* Message Queue related members */
-    pthread_mutex_t  mutex;
-    sem_t sem_message;
-    int commandq_size;
-    int dataq_size;
-    struct video_msgq *ptr_dataq;
-    struct video_msgq *ptr_cmdq;
-    int write_dataq ;
-    int read_dataq;
-    int write_comq ;
-    int read_comq ;
-
+  /* Message Queue related members */
+  pthread_mutex_t mutex;
+  sem_t sem_message;
+  int commandq_size;
+  int dataq_size;
+  struct video_msgq *ptr_dataq;
+  struct video_msgq *ptr_cmdq;
+  int write_dataq;
+  int read_dataq;
+  int write_comq;
+  int read_comq;
 };
 
-int check_if_queue_empty ( unsigned int queuetocheck,void* queuecontext );
+int check_if_queue_empty(unsigned int queuetocheck, void *queuecontext);
 
-struct video_msgq * queue_get_cmd ( void* queuecontext );
+struct video_msgq *queue_get_cmd(void *queuecontext);
 
+int queue_post_cmdq(void *queuecontext,
+                    struct video_msgq *post_msg);
 
-
-int queue_post_cmdq ( void *queuecontext,
-        struct video_msgq *post_msg
-        );
-
-int queue_post_dataq ( void *queuecontext,
-        struct video_msgq *post_msg
-        );
+int queue_post_dataq(void *queuecontext,
+                     struct video_msgq *post_msg);
 
 #endif /* QUEUE_H */

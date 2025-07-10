@@ -30,63 +30,63 @@
 #ifndef C2D_ColorConverter_H_
 #define C2D_ColorConverter_H_
 
-#include <pthread.h>
 #include <c2d2.h>
+#include <pthread.h>
 #include <sys/types.h>
 
-typedef C2D_STATUS (*LINK_c2dCreateSurface)( uint32 *surface_id,
-        uint32 surface_bits,
-        C2D_SURFACE_TYPE surface_type,
-        void *surface_definition );
+typedef C2D_STATUS (*LINK_c2dCreateSurface)(uint32 *surface_id,
+                                            uint32 surface_bits,
+                                            C2D_SURFACE_TYPE surface_type,
+                                            void *surface_definition);
 
-typedef C2D_STATUS (*LINK_c2dUpdateSurface)( uint32 surface_id,
-        uint32 surface_bits,
-        C2D_SURFACE_TYPE surface_type,
-        void *surface_definition );
+typedef C2D_STATUS (*LINK_c2dUpdateSurface)(uint32 surface_id,
+                                            uint32 surface_bits,
+                                            C2D_SURFACE_TYPE surface_type,
+                                            void *surface_definition);
 
-typedef C2D_STATUS (*LINK_c2dReadSurface)( uint32 surface_id,
-        C2D_SURFACE_TYPE surface_type,
-        void *surface_definition,
-        int32 x, int32 y );
+typedef C2D_STATUS (*LINK_c2dReadSurface)(uint32 surface_id,
+                                          C2D_SURFACE_TYPE surface_type,
+                                          void *surface_definition,
+                                          int32 x, int32 y);
 
-typedef C2D_STATUS (*LINK_c2dDraw)( uint32 target_id,
-        uint32 target_config, C2D_RECT *target_scissor,
-        uint32 target_mask_id, uint32 target_color_key,
-        C2D_OBJECT *objects_list, uint32 num_objects );
+typedef C2D_STATUS (*LINK_c2dDraw)(uint32 target_id,
+                                   uint32 target_config, C2D_RECT *target_scissor,
+                                   uint32 target_mask_id, uint32 target_color_key,
+                                   C2D_OBJECT *objects_list, uint32 num_objects);
 
-typedef C2D_STATUS (*LINK_c2dFlush)( uint32 target_id, c2d_ts_handle *timestamp);
+typedef C2D_STATUS (*LINK_c2dFlush)(uint32 target_id, c2d_ts_handle *timestamp);
 
-typedef C2D_STATUS (*LINK_c2dFinish)( uint32 target_id);
+typedef C2D_STATUS (*LINK_c2dFinish)(uint32 target_id);
 
-typedef C2D_STATUS (*LINK_c2dWaitTimestamp)( c2d_ts_handle timestamp );
+typedef C2D_STATUS (*LINK_c2dWaitTimestamp)(c2d_ts_handle timestamp);
 
-typedef C2D_STATUS (*LINK_c2dDestroySurface)( uint32 surface_id );
+typedef C2D_STATUS (*LINK_c2dDestroySurface)(uint32 surface_id);
 
-typedef C2D_STATUS (*LINK_c2dMapAddr)( int mem_fd, void * hostptr, uint32 len, uint32 offset, uint32 flags, void ** gpuaddr);
+typedef C2D_STATUS (*LINK_c2dMapAddr)(int mem_fd, void *hostptr, uint32 len, uint32 offset, uint32 flags, void **gpuaddr);
 
-typedef C2D_STATUS (*LINK_c2dUnMapAddr)(void * gpuaddr);
+typedef C2D_STATUS (*LINK_c2dUnMapAddr)(void *gpuaddr);
 
-typedef void (*LINK_AdrenoComputeAlignedWidthAndHeight) (int width, int height, int bpp, int tile_mode, int raster_mode,
-                                                          int padding_threshold, int *aligned_width, int * aligned_height);
+typedef void (*LINK_AdrenoComputeAlignedWidthAndHeight)(int width, int height, int bpp, int tile_mode, int raster_mode,
+                                                        int padding_threshold, int *aligned_width, int *aligned_height);
 
 namespace android {
 
 /*TODO: THIS NEEDS TO ENABLED FOR JB PLUS*/
 enum ColorConvertFormat {
-    RGB565 = 1,
-    YCbCr420Tile,
-    YCbCr420SP,
-    YCbCr420P,
-    YCrCb420P,
-    RGBA8888,
-    NV12_2K,
-    NV12_128m,
-    NV12_UBWC,
+  RGB565 = 1,
+  YCbCr420Tile,
+  YCbCr420SP,
+  YCbCr420P,
+  YCrCb420P,
+  RGBA8888,
+  NV12_2K,
+  NV12_128m,
+  NV12_UBWC,
 };
 
 typedef struct {
-    int32_t numerator;
-    int32_t denominator;
+  int32_t numerator;
+  int32_t denominator;
 } C2DBytesPerPixel;
 
 typedef struct {
@@ -106,17 +106,16 @@ typedef enum {
 } C2D_PORT;
 
 class C2DColorConverterBase {
-
-public:
-    virtual ~C2DColorConverterBase(){};
-    virtual int convertC2D(int srcFd, void *srcBase, void * srcData, int dstFd, void *dstBase, void * dstData) = 0;
-    virtual int32_t getBuffReq(int32_t port, C2DBuffReq *req) = 0;
-    virtual int32_t dumpOutput(char * filename, char mode) = 0;
+ public:
+  virtual ~C2DColorConverterBase(){};
+  virtual int convertC2D(int srcFd, void *srcBase, void *srcData, int dstFd, void *dstBase, void *dstData) = 0;
+  virtual int32_t getBuffReq(int32_t port, C2DBuffReq *req) = 0;
+  virtual int32_t dumpOutput(char *filename, char mode) = 0;
 };
 
-typedef C2DColorConverterBase* createC2DColorConverter_t(size_t srcWidth, size_t srcHeight, size_t dstWidth, size_t dstHeight, ColorConvertFormat srcFormat, ColorConvertFormat dstFormat, int32_t flags, size_t srcStride);
-typedef void destroyC2DColorConverter_t(C2DColorConverterBase*);
+typedef C2DColorConverterBase *createC2DColorConverter_t(size_t srcWidth, size_t srcHeight, size_t dstWidth, size_t dstHeight, ColorConvertFormat srcFormat, ColorConvertFormat dstFormat, int32_t flags, size_t srcStride);
+typedef void destroyC2DColorConverter_t(C2DColorConverterBase *);
 
-}
+}  // namespace android
 
 #endif  // C2D_ColorConverter_H_

@@ -30,23 +30,23 @@
  * */
 
 typedef struct aacConfig {
-    unsigned int n_sampleRate;
-    unsigned int n_channels;
-    unsigned int n_bitsPerSample;
-    unsigned int n_bitrate;
-    unsigned int n_samplesPerFrame;
-}aacConfigType;
+  unsigned int n_sampleRate;
+  unsigned int n_channels;
+  unsigned int n_bitsPerSample;
+  unsigned int n_bitrate;
+  unsigned int n_samplesPerFrame;
+} aacConfigType;
 
 class aacDecode {
-public:
-    aacDecode();
-    ~aacDecode();
-    bool aacConfigure(aacConfigType* p_aacConfig);
-    bool aacDecodeFrame(unsigned char* p_Buffer, unsigned int n_size);
+ public:
+  aacDecode();
+  ~aacDecode();
+  bool aacConfigure(aacConfigType* p_aacConfig);
+  bool aacDecodeFrame(unsigned char* p_Buffer, unsigned int n_size);
 
-private:
-    void* p_aacHandle;
-    void* p_aacInfo;
-    aacConfigType s_aacConfig;
+ private:
+  void* p_aacHandle;
+  void* p_aacInfo;
+  aacConfigType s_aacConfig;
 };
 #endif

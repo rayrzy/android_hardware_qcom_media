@@ -29,28 +29,30 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                             O p e n M A X   w r a p p e r s
                              O p e n  M A X   C o r e
 
-*//** @file qc_omx_common.h
-  This module contains the definitions of the OpenMAX core.
+*/
+/** @file qc_omx_common.h
+This module contains the definitions of the OpenMAX core.
 
-*//*========================================================================*/
+*/
+/*========================================================================*/
 
 #ifndef QC_OMX_COMMON_H
 #define QC_OMX_COMMON_H
 
+#include <stdio.h>  // Standard IO
 
-#include <stdio.h>           // Standard IO
-#include "OMX_Core.h"        // OMX API
-#include "OMX_QCOMExtns.h"   // OMX API
+#include "OMX_Core.h"       // OMX API
+#include "OMX_QCOMExtns.h"  // OMX API
 
-#define OMX_CORE_MAX_CMP                1 // MAX Components supported
-#define OMX_CORE_MAX_CMP_ROLES          1 // MAX Roles per component
-#define OMX_SPEC_VERSION       0x00000101 // OMX Version
+#define OMX_CORE_MAX_CMP 1           // MAX Components supported
+#define OMX_CORE_MAX_CMP_ROLES 1     // MAX Roles per component
+#define OMX_SPEC_VERSION 0x00000101  // OMX Version
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-typedef void * (*create_qc_omx_component)(void);
+typedef void* (*create_qc_omx_component)(void);
 
 #ifdef _ANDROID_
 #define LOG_TAG "QC_CORE"
@@ -62,4 +64,3 @@ typedef void * (*create_qc_omx_component)(void);
 #endif
 
 #endif
-

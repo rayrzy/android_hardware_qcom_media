@@ -29,16 +29,18 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --------------------------------------------------------------------------*/
 /*========================================================================
 
-*//** @file QOMX_StreamingExtensions.h
+*/
+/** @file QOMX_StreamingExtensions.h
 
 @par FILE SERVICES:
-      Qualcomm extensions API for OpenMax IL Streaming Components.
+    Qualcomm extensions API for OpenMax IL Streaming Components.
 
-      This file contains the description of the Qualcomm OpenMax IL
-      streaming extention interface, through which the IL client and OpenMax
-      components can access additional streaming capabilities.
+    This file contains the description of the Qualcomm OpenMax IL
+    streaming extention interface, through which the IL client and OpenMax
+    components can access additional streaming capabilities.
 
-*//*====================================================================== */
+*/
+/*====================================================================== */
 
 /*========================================================================
                              Edit History
@@ -59,12 +61,11 @@ $Change: 1638323 $
 
 ========================================================================== */
 
-#include <OMX_Types.h>
 #include <OMX_Component.h>
+#include <OMX_Types.h>
 
-#if defined( __cplusplus )
-extern "C"
-{
+#if defined(__cplusplus)
+extern "C" {
 #endif /* end of macro __cplusplus */
 
 /* =======================================================================
@@ -78,50 +79,48 @@ extern "C"
 /**
  * Qualcomm vendor streaming extension strings.
  */
-#define OMX_QUALCOMM_INDEX_CONFIG_WATERMARK                       "OMX.Qualcomm.index.config.Watermark"
-#define OMX_QUALCOMM_INDEX_CONFIG_WATERMARKSTATUS                 "OMX.Qualcomm.index.config.WatermarkStatus"
-#define OMX_QUALCOMM_INDEX_CONFIG_BUFFERMARKING                   "OMX.Qualcomm.index.config.BufferMarking"
-#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_NETWORKINTERFACE       "OMX.Qualcomm.index.param.streaming.NetworkInterface"
-#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_NETWORKPROFILE         "OMX.Qualcomm.index.param.streaming.NetworkProfile"
-#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_PROXYSERVER            "OMX.Qualcomm.index.param.streaming.ProxyServer"
-#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_SOURCEPORTS            "OMX.Qualcomm.index.param.streaming.SourcePorts"
-#define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_PROTOCOLHEADER        "OMX.Qualcomm.index.param.streaming.ProtocolHeader"
-#define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_PROTOCOLEVENT         "OMX.Qualcomm.index.config.streaming.ProtocolEvent"
+#define OMX_QUALCOMM_INDEX_CONFIG_WATERMARK "OMX.Qualcomm.index.config.Watermark"
+#define OMX_QUALCOMM_INDEX_CONFIG_WATERMARKSTATUS "OMX.Qualcomm.index.config.WatermarkStatus"
+#define OMX_QUALCOMM_INDEX_CONFIG_BUFFERMARKING "OMX.Qualcomm.index.config.BufferMarking"
+#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_NETWORKINTERFACE "OMX.Qualcomm.index.param.streaming.NetworkInterface"
+#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_NETWORKPROFILE "OMX.Qualcomm.index.param.streaming.NetworkProfile"
+#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_PROXYSERVER "OMX.Qualcomm.index.param.streaming.ProxyServer"
+#define OMX_QUALCOMM_INDEX_PARAM_STREAMING_SOURCEPORTS "OMX.Qualcomm.index.param.streaming.SourcePorts"
+#define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_PROTOCOLHEADER "OMX.Qualcomm.index.param.streaming.ProtocolHeader"
+#define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_PROTOCOLEVENT "OMX.Qualcomm.index.config.streaming.ProtocolEvent"
 #define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_DYNAMIC_SWITCH_CAPABILITY "OMX.Qualcomm.index.config.streaming.DynamicSessionSwitchCapability"
-#define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_PROTOCOLHEADERSEVENT  "OMX.QCOM.index.config.streaming.ProtocolHeadersEvent"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_USERPAUSETIMEOUT          "OMX.QCOM.index.config.streaming.UserPauseTimeout"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_NOTIFYERRORONOPTIONSTIMEOUT   "OMX.QCOM.index.config.streaming.NotifyErrorOnOptionsTimeout"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_USEINTERLEAVEDTCP         "OMX.QCOM.index.config.streaming.UseInterleavedTCP"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_DATAINACTIVITYTIMEOUT     "OMX.QCOM.index.config.streaming.DataInactivityTimeout"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTSPOPTIONSKEEPALIVEINTERVAL   "OMX.QCOM.index.config.streaming.RTSPOptionsKeepaliveInterval"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTCPRRINTERVAL            "OMX.QCOM.index.config.streaming.RTCPRRInterval"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_RECONFIGUREPORT           "OMX.QCOM.index.config.streaming.ReconfigurePort"
+#define OMX_QUALCOMM_INDEX_CONFIG_STREAMING_PROTOCOLHEADERSEVENT "OMX.QCOM.index.config.streaming.ProtocolHeadersEvent"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_USERPAUSETIMEOUT "OMX.QCOM.index.config.streaming.UserPauseTimeout"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_NOTIFYERRORONOPTIONSTIMEOUT "OMX.QCOM.index.config.streaming.NotifyErrorOnOptionsTimeout"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_USEINTERLEAVEDTCP "OMX.QCOM.index.config.streaming.UseInterleavedTCP"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_DATAINACTIVITYTIMEOUT "OMX.QCOM.index.config.streaming.DataInactivityTimeout"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTSPOPTIONSKEEPALIVEINTERVAL "OMX.QCOM.index.config.streaming.RTSPOptionsKeepaliveInterval"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTCPRRINTERVAL "OMX.QCOM.index.config.streaming.RTCPRRInterval"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_RECONFIGUREPORT "OMX.QCOM.index.config.streaming.ReconfigurePort"
 #define OMX_QCOM_INDEX_CONFIG_STREAMING_DEFAULTRTSPMESSAGETIMEOUT "OMX.QCOM.index.config.streaming.DefaultRTSPMessageTimeout"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_ENABLEFIREWALLPROBES      "OMX.QCOM.index.config.streaming.EnableFirewallProbes"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTSPOPTIONSBEFORESETUP    "OMX.QCOM.index.config.streaming.RTSPOptionsBeforeSetup"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTSPPIPELINEDFASTSTARTUP  "OMX.QCOM.index.config.streaming.RTSPPipelinedFastStartup"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_WMFASTSTARTSPEED          "OMX.QCOM.index.config.streaming.WMFastStartSpeed"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_ENABLEFASTRECONNECT       "OMX.QCOM.index.config.streaming.EnableFastReconnect"
-#define OMX_QCOM_INDEX_CONFIG_STREAMING_FASTRECONNECTMAXATTEMPTS  "OMX.QCOM.index.config.streaming.FastReconnectMaxAttempts"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_ENABLEFIREWALLPROBES "OMX.QCOM.index.config.streaming.EnableFirewallProbes"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTSPOPTIONSBEFORESETUP "OMX.QCOM.index.config.streaming.RTSPOptionsBeforeSetup"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_RTSPPIPELINEDFASTSTARTUP "OMX.QCOM.index.config.streaming.RTSPPipelinedFastStartup"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_WMFASTSTARTSPEED "OMX.QCOM.index.config.streaming.WMFastStartSpeed"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_ENABLEFASTRECONNECT "OMX.QCOM.index.config.streaming.EnableFastReconnect"
+#define OMX_QCOM_INDEX_CONFIG_STREAMING_FASTRECONNECTMAXATTEMPTS "OMX.QCOM.index.config.streaming.FastReconnectMaxAttempts"
 #define OMX_QCOM_INDEX_CONFIG_STREAMING_DOWNLOADPROGRESSUNITSTYPE "OMX.QCOM.index.config.streaming.DownloadProgressUnitsType"
-#define OMX_QOMX_INDEX_CONFIG_STREAMING_DOWNLOADPROGRESS          "OMX.QCOM.index.config.streaming.DownloadProgress"
+#define OMX_QOMX_INDEX_CONFIG_STREAMING_DOWNLOADPROGRESS "OMX.QCOM.index.config.streaming.DownloadProgress"
 /**
  * Enumeration of the buffering watermark types
  */
-typedef enum QOMX_WATERMARKTYPE
-{
+typedef enum QOMX_WATERMARKTYPE {
   QOMX_WATERMARK_UNDERRUN, /**< buffer has reached or is operating in an underrun condition */
-  QOMX_WATERMARK_NORMAL /**< has reached or is operating in a normal (optimal) condition */
-}QOMX_WATERMARKTYPE;
+  QOMX_WATERMARK_NORMAL    /**< has reached or is operating in a normal (optimal) condition */
+} QOMX_WATERMARKTYPE;
 
 /**
  * Enumeration of type of buffering level tracking
  */
-typedef enum QOMX_WATERMARKUNITSTYPE
-{
+typedef enum QOMX_WATERMARKUNITSTYPE {
   QOMX_WATERMARKUNITSTYPE_Time, /**< use a media time based reference */
-  QOMX_WATERMARKUNITSTYPE_Data /**< use a data fullness based reference */
-}QOMX_WATERMARKUNITSTYPE;
+  QOMX_WATERMARKUNITSTYPE_Data  /**< use a data fullness based reference */
+} QOMX_WATERMARKUNITSTYPE;
 
 /**
  * Buffering watermark levels.
@@ -153,13 +152,13 @@ typedef enum QOMX_WATERMARKUNITSTYPE
  * bEnable      : specifies if the watermark type is being enabled or disabled
  */
 typedef struct QOMX_BUFFERINGWATERMARKTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_WATERMARKTYPE eWaterMark;
-    OMX_U32 nLevel;
-    QOMX_WATERMARKUNITSTYPE eUnitsType;
-    OMX_BOOL bEnable;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_WATERMARKTYPE eWaterMark;
+  OMX_U32 nLevel;
+  QOMX_WATERMARKUNITSTYPE eUnitsType;
+  OMX_BOOL bEnable;
 } QOMX_BUFFERINGWATERMARKTYPE;
 
 /**
@@ -189,12 +188,12 @@ typedef struct QOMX_BUFFERINGWATERMARKTYPE {
  *                       QOMX_WATERMARKUNITSTYPE_Data nLevel in units of bytes.
  */
 typedef struct QOMX_BUFFERINGSTATUSTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    QOMX_WATERMARKTYPE eCurrentWaterMark;
-    QOMX_WATERMARKUNITSTYPE eUnitsType;
-    OMX_U32 nCurrentLevel;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  QOMX_WATERMARKTYPE eCurrentWaterMark;
+  QOMX_WATERMARKUNITSTYPE eUnitsType;
+  OMX_U32 nCurrentLevel;
 } QOMX_BUFFERINGSTATUSTYPE;
 
 /**
@@ -211,11 +210,11 @@ typedef struct QOMX_BUFFERINGSTATUSTYPE {
  *
  */
 typedef struct QOMX_BUFFERMARKINGTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_MARKTYPE markInfo;
-    OMX_BOOL  bEnable;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_MARKTYPE markInfo;
+  OMX_BOOL bEnable;
 } QOMX_BUFFERMARKINGTYPE;
 
 /**
@@ -227,8 +226,7 @@ typedef struct QOMX_BUFFERMARKINGTYPE {
  *  nMinimumPortNumber  : Minimum port number the component may use
  *  nMaximumPortNumber  : Maximum port number the component may use
  */
-typedef struct QOMX_PARAM_STREAMING_SOURCE_PORTS
-{
+typedef struct QOMX_PARAM_STREAMING_SOURCE_PORTS {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   OMX_U16 nMinimumPortNumber;
@@ -238,8 +236,7 @@ typedef struct QOMX_PARAM_STREAMING_SOURCE_PORTS
 /**
  * Enumeration used to define to the protocol message type.
  */
-typedef enum QOMX_STREAMING_PROTOCOLMESSAGETYPE
-{
+typedef enum QOMX_STREAMING_PROTOCOLMESSAGETYPE {
   QOMX_STREAMING_PROTOCOLMESSAGE_REQUEST,
   QOMX_STREAMING_PROTOCOLMESSAGE_RESPONSE,
   QOMX_STREAMING_PROTOCOLMESSAGE_ALL
@@ -248,8 +245,7 @@ typedef enum QOMX_STREAMING_PROTOCOLMESSAGETYPE
 /**
  * Enumeration used to define the protocol header action type.
  */
-typedef enum QOMX_STREAMING_PROTOCOLHEADERACTIONTYPE
-{
+typedef enum QOMX_STREAMING_PROTOCOLHEADERACTIONTYPE {
   QOMX_STREAMING_PROTOCOLHEADERACTION_NONE,
   QOMX_STREAMING_PROTOCOLHEADERACTION_ADD,
   QOMX_STREAMING_PROTOCOLHEADERACTION_REMOVE
@@ -295,8 +291,7 @@ typedef enum QOMX_STREAMING_PROTOCOLHEADERACTIONTYPE
  *                          (QOMX_STREAMING_PROTOCOLMESSAGE_ALL) it will be
  *                          absent (nMessageClassSize will be zero).
  */
-typedef struct QOMX_CONFIG_STREAMING_PROTOCOLHEADERTYPE
-{
+typedef struct QOMX_CONFIG_STREAMING_PROTOCOLHEADERTYPE {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   QOMX_STREAMING_PROTOCOLMESSAGETYPE eMessageType;
@@ -330,8 +325,7 @@ typedef struct QOMX_CONFIG_STREAMING_PROTOCOLHEADERTYPE
  *                      by the entity body of size nEntityBodySize bytes,
  *                      followed by nContentUriSize bytes of URI
  */
-typedef struct QOMX_CONFIG_STREAMING_PROTOCOLEVENTTYPE
-{
+typedef struct QOMX_CONFIG_STREAMING_PROTOCOLEVENTTYPE {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   OMX_U32 nProtocolEvent;
@@ -370,19 +364,18 @@ typedef struct QOMX_CONFIG_STREAMING_PROTOCOLEVENTTYPE
  *      terminated.
  */
 typedef struct QOMX_STREAMING_PROTOCOLHEADERSTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    QOMX_STREAMING_PROTOCOLMESSAGETYPE eMessageType;
-    OMX_U32 nMessageClassSize;
-    OMX_U32 nMessageAtributesSize;
-    OMX_U8 messageHeaders[1];
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  QOMX_STREAMING_PROTOCOLMESSAGETYPE eMessageType;
+  OMX_U32 nMessageClassSize;
+  OMX_U32 nMessageAtributesSize;
+  OMX_U8 messageHeaders[1];
 } QOMX_STREAMING_PROTOCOLHEADERSTYPE;
 
 /**
  * Enumeration of possible streaming network interfaces.
  */
-typedef enum QOMX_STREAMING_NETWORKINTERFACETYPE
-{
+typedef enum QOMX_STREAMING_NETWORKINTERFACETYPE {
   QOMX_STREAMING_NETWORKINTERFACE_ANY_IFACE,
   QOMX_STREAMING_NETWORKINTERFACE_CDMA_SN_IFACE,
   QOMX_STREAMING_NETWORKINTERFACE_CDMA_AN_IFACE,
@@ -413,8 +406,7 @@ typedef enum QOMX_STREAMING_NETWORKINTERFACETYPE
  *  nVersion          : OMX specification version information
  *  eNetworkInterface : Network interface the component may use
  */
-typedef struct QOMX_PARAM_STREAMING_NETWORKINTERFACE
-{
+typedef struct QOMX_PARAM_STREAMING_NETWORKINTERFACE {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   QOMX_STREAMING_NETWORKINTERFACETYPE eNetworkInterface;
@@ -423,12 +415,10 @@ typedef struct QOMX_PARAM_STREAMING_NETWORKINTERFACE
 /**
  * Enumeration of UnitType for DownloadProgress
  */
-typedef enum QOMX_DOWNLOADPROGRESSUNITSTYPE
-{
+typedef enum QOMX_DOWNLOADPROGRESSUNITSTYPE {
   QOMX_DOWNLOADPROGRESSUNITSTYPE_TIME,
   QOMX_DOWNLOADPROGRESSUNITSTYPE_DATA
 } QOMX_DOWNLOADPROGRESSUNITSTYPE;
-
 
 /**
  * DownloadProgress units
@@ -442,14 +432,12 @@ typedef enum QOMX_DOWNLOADPROGRESSUNITSTYPE
  *                      which download prgoress should be
  *                      reported
  */
-typedef struct QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSUNITS
-{
+typedef struct QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSUNITS {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   OMX_U32 nPortIndex;
   QOMX_DOWNLOADPROGRESSUNITSTYPE eUnitsType;
 } QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSUNITS;
-
 
 /**
  * Download Progress
@@ -469,8 +457,7 @@ typedef struct QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSUNITS
  *                       position in time or data scale (based
  *                       on eUnitsType)
  */
-typedef struct QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSTYPE
-{
+typedef struct QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSTYPE {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   OMX_U32 nPortIndex;
@@ -478,9 +465,8 @@ typedef struct QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSTYPE
   OMX_U32 nCurrentStartOffset;
 } QOMX_CONFIG_STREAMING_DOWNLOADPROGRESSTYPE;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif /* end of macro __cplusplus */
 
 #endif /* QOMX_STREAMINGEXTENSIONS_H_ */
-

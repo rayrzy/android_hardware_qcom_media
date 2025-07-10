@@ -29,11 +29,12 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                             O p e n M A X   w r a p p e r s
                              O p e n  M A X   C o r e
 
-*//** @file QOMX_AudioIndexExtensions.h
-  This module contains the index extensions for Audio
+*/
+/** @file QOMX_AudioIndexExtensions.h
+This module contains the index extensions for Audio
 
-*//*========================================================================*/
-
+*/
+/*========================================================================*/
 
 #ifndef __H_QOMX_AUDIOINDEXEXTENSIONS_H__
 #define __H_QOMX_AUDIOINDEXEXTENSIONS_H__
@@ -51,9 +52,8 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ========================================================================== */
 
-#if defined( __cplusplus )
-extern "C"
-{
+#if defined(__cplusplus)
+extern "C" {
 #endif /* end of macro __cplusplus */
 
 /**
@@ -61,29 +61,28 @@ extern "C"
  * audio. The audio extensions occupy a range of
  * 0x7F100000-0x7F1FFFFF, inclusive.
  */
-typedef enum QOMX_AUDIO_EXTENSIONS_INDEXTYPE
-{
-    QOMX_IndexParamAudioAmrWbPlus       = 0x7F200000, /**< "OMX.Qualcomm.index.audio.amrwbplus" */
-    QOMX_IndexParamAudioWma10Pro        = 0x7F200001, /**< "OMX.Qualcomm.index.audio.wma10pro" */
-    QOMX_IndexParamAudioSessionId       = 0x7F200002, /**< "OMX.Qualcomm.index.audio.sessionId" */
-    QOMX_IndexParamAudioVoiceRecord     = 0x7F200003, /**< "OMX.Qualcomm.index.audio.VoiceRecord" */
-    QOMX_IndexConfigAudioDualMono       = 0x7F200004, /**< "OMX.Qualcomm.index.audio.dualmono" */
-    QOMX_IndexParamAudioAc3             = 0x7F200005, /**< "OMX.Qualcomm.index.audio.ac3" */
-    QOMX_IndexParamAudioAc3PostProc     = 0x7F200006, /**< "OMX.Qualcomm.index.audio.postproc.ac3" */
-    QOMX_IndexParamAudioAacSelectMixCoef = 0x7F200007, /** "OMX.Qualcomm.index.audio.aac_sel_mix_coef**/
-    QOMX_IndexParamAudioAlac            = 0x7F200008, /** "OMX.Qualcomm.index.audio.alac" */
-    QOMX_IndexParamAudioApe             = 0x7F200009, /** "OMX.Qualcomm.index.audio.ape" */
-    QOMX_IndexParamAudioFlacDec         = 0x7F20000A, /** "OMX.Qualcomm.index.audio.flacdec**/
-    QOMX_IndexParamAudioDsdDec          = 0x7F20000B, /** "OMX.Qualcomm.index.audio.Dsddec**/
-    QOMX_IndexParamAudioMpegh           = 0x7F20000C, /** "OMX.Qualcomm.index.audio.mpegh**/
-    QOMX_IndexParamAudioMpeghHeader     = 0x7F20000D, /** "OMX.Qualcomm.index.audio.MpeghHeader"**/
-    QOMX_IndexParamAudioChannelMask     = 0x7F20000E, /** "OMX.Qualcomm.index.audio.ChannelMask"**/
-    QOMX_IndexParamAudioBinauralMode    = 0x7F20000F, /** "OMX.Qualcomm.index.audio.BinauralMode"**/
-    QOMX_IndexParamAudioRotation        = 0x7F200010, /** "OMX.Qualcomm.index.audio.Rotation"**/
-    QOMX_IndexParamAudioUnused          = 0x7F2FFFFF
+typedef enum QOMX_AUDIO_EXTENSIONS_INDEXTYPE {
+  QOMX_IndexParamAudioAmrWbPlus = 0x7F200000,        /**< "OMX.Qualcomm.index.audio.amrwbplus" */
+  QOMX_IndexParamAudioWma10Pro = 0x7F200001,         /**< "OMX.Qualcomm.index.audio.wma10pro" */
+  QOMX_IndexParamAudioSessionId = 0x7F200002,        /**< "OMX.Qualcomm.index.audio.sessionId" */
+  QOMX_IndexParamAudioVoiceRecord = 0x7F200003,      /**< "OMX.Qualcomm.index.audio.VoiceRecord" */
+  QOMX_IndexConfigAudioDualMono = 0x7F200004,        /**< "OMX.Qualcomm.index.audio.dualmono" */
+  QOMX_IndexParamAudioAc3 = 0x7F200005,              /**< "OMX.Qualcomm.index.audio.ac3" */
+  QOMX_IndexParamAudioAc3PostProc = 0x7F200006,      /**< "OMX.Qualcomm.index.audio.postproc.ac3" */
+  QOMX_IndexParamAudioAacSelectMixCoef = 0x7F200007, /** "OMX.Qualcomm.index.audio.aac_sel_mix_coef**/
+  QOMX_IndexParamAudioAlac = 0x7F200008,             /** "OMX.Qualcomm.index.audio.alac" */
+  QOMX_IndexParamAudioApe = 0x7F200009,              /** "OMX.Qualcomm.index.audio.ape" */
+  QOMX_IndexParamAudioFlacDec = 0x7F20000A,          /** "OMX.Qualcomm.index.audio.flacdec**/
+  QOMX_IndexParamAudioDsdDec = 0x7F20000B,           /** "OMX.Qualcomm.index.audio.Dsddec**/
+  QOMX_IndexParamAudioMpegh = 0x7F20000C,            /** "OMX.Qualcomm.index.audio.mpegh**/
+  QOMX_IndexParamAudioMpeghHeader = 0x7F20000D,      /** "OMX.Qualcomm.index.audio.MpeghHeader"**/
+  QOMX_IndexParamAudioChannelMask = 0x7F20000E,      /** "OMX.Qualcomm.index.audio.ChannelMask"**/
+  QOMX_IndexParamAudioBinauralMode = 0x7F20000F,     /** "OMX.Qualcomm.index.audio.BinauralMode"**/
+  QOMX_IndexParamAudioRotation = 0x7F200010,         /** "OMX.Qualcomm.index.audio.Rotation"**/
+  QOMX_IndexParamAudioUnused = 0x7F2FFFFF
 } QOMX_AUDIO_EXTENSIONS_INDEXTYPE;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif /* end of macro __cplusplus */
 

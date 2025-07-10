@@ -29,8 +29,6 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __H_QOMX_COREEXTENSIONS_H__
 #define __H_QOMX_COREEXTENSIONS_H__
 
-
-
 /*========================================================================
 
                      INCLUDE FILES FOR MODULE
@@ -44,15 +42,14 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ========================================================================== */
 
-#if defined( __cplusplus )
-extern "C"
-{
+#if defined(__cplusplus)
+extern "C" {
 #endif /* end of macro __cplusplus */
 
 /**
  * Qualcom vendor extensions.
  */
-#define OMX_QCOM_INDEX_PARAM_INDEXEXTRADATA "OMX.QCOM.index.param.IndexExtraData" /**< reference: QOMX_INDEXEXTRADATATYPE */
+#define OMX_QCOM_INDEX_PARAM_INDEXEXTRADATA "OMX.QCOM.index.param.IndexExtraData"   /**< reference: QOMX_INDEXEXTRADATATYPE */
 #define OMX_QCOM_INDEX_PARAM_HELDBUFFERCOUNT "OMX.QCOM.index.param.HeldBufferCount" /**< reference: QOMX_HELDBUFFERCOUNTTYPE */
 
 /**
@@ -76,7 +73,7 @@ extern "C"
  * buffer. This flag can be cleared by the component when the
  * emptied buffer is returned to it.
  */
-#define QOMX_BUFFERFLAG_READONLY         0x40000000
+#define QOMX_BUFFERFLAG_READONLY 0x40000000
 
 /**
  * Buffer header nFlags field extension.
@@ -93,7 +90,7 @@ extern "C"
  * example, a subframe in an H.264 access unit is defined as the
  * "network abstraction layer" unit, or NAL unit.
  */
-#define QOMX_BUFFERFLAG_ENDOFSUBFRAME    0x20000000
+#define QOMX_BUFFERFLAG_ENDOFSUBFRAME 0x20000000
 
 /**
  * A component sends this error to the IL client (via the EventHandler callback)
@@ -104,7 +101,7 @@ extern "C"
  * fail when set to a down stream component. The index that failed will be
  * included as the nData2 parameter of the EventHandler callback.
  */
-#define QOMX_ErrorAsyncIndexFailed (OMX_ErrorVendorStartUnused+1)
+#define QOMX_ErrorAsyncIndexFailed (OMX_ErrorVendorStartUnused + 1)
 
 /* In some scenarios there may be a possibilty to run out of the storage space
  * and components may want to notify this error to IL client to take appropriate
@@ -133,11 +130,11 @@ extern "C"
  *  nIndex     : The index associated with the extra data
  */
 typedef struct QOMX_INDEXEXTRADATATYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_BOOL bEnabled;
-    OMX_INDEXTYPE nIndex;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_BOOL bEnabled;
+  OMX_INDEXTYPE nIndex;
 } QOMX_INDEXEXTRADATATYPE;
 
 /**
@@ -151,13 +148,13 @@ typedef struct QOMX_INDEXEXTRADATATYPE {
  *  nHeldBufferCount   : Read-only, maximum number of buffers that will be held
  */
 typedef struct QOMX_HELDBUFFERCOUNTTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_U32 nHeldBufferCount;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_U32 nHeldBufferCount;
 } QOMX_HELDBUFFERCOUNTTYPE;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif /* end of macro __cplusplus */
 

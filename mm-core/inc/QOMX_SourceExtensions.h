@@ -29,17 +29,18 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __H_QOMX_SOURCEEXTENSIONS_H__
 #define __H_QOMX_SOURCEEXTENSIONS_H__
 /*========================================================================
-*//** @file QOMX_SourceExtensions.h
+ */
+/** @file QOMX_SourceExtensions.h
 
 @par FILE SERVICES:
-    Qualcomm extensions API for OpenMax IL demuxer component.
+  Qualcomm extensions API for OpenMax IL demuxer component.
 
-    This file contains the description of the Qualcomm OpenMax IL
-    demuxer component extention interface, through which the IL client and
-    OpenMax components can access additional capabilities of the demuxer.
+  This file contains the description of the Qualcomm OpenMax IL
+  demuxer component extention interface, through which the IL client and
+  OpenMax components can access additional capabilities of the demuxer.
 
-*//*====================================================================== */
-
+*/
+/*====================================================================== */
 
 /*========================================================================
                      INCLUDE FILES FOR MODULE
@@ -49,22 +50,21 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                       DEFINITIONS AND DECLARATIONS
 ========================================================================== */
 
-#if defined( __cplusplus )
-extern "C"
-{
+#if defined(__cplusplus)
+extern "C" {
 #endif /* end of macro __cplusplus */
 /* Frame size query supported extension string */
-#define OMX_QCOM_INDEX_PARAM_FRAMESIZEQUERYSUPPORTED       "OMX.QCOM.index.param.FrameSizeQuerySupported"      /**< reference: QOMX_FRAMESIZETYPE */
+#define OMX_QCOM_INDEX_PARAM_FRAMESIZEQUERYSUPPORTED "OMX.QCOM.index.param.FrameSizeQuerySupported" /**< reference: QOMX_FRAMESIZETYPE */
 
 /* Content interface extension strings */
-#define OMX_QCOM_INDEX_PARAM_CONTENTINTERFACE_IXSTREAM     "OMX.QCOM.index.param.contentinterface.ixstream"    /**< reference: QOMX_CONTENTINTERFACETYPE*/
-#define OMX_QCOM_INDEX_PARAM_CONTENTINTERFACE_ISTREAMPORT  "OMX.QCOM.index.param.contentinterface.istreamport" /**< reference: QOMX_CONTENTINTERFACETYPE*/
+#define OMX_QCOM_INDEX_PARAM_CONTENTINTERFACE_IXSTREAM "OMX.QCOM.index.param.contentinterface.ixstream"       /**< reference: QOMX_CONTENTINTERFACETYPE*/
+#define OMX_QCOM_INDEX_PARAM_CONTENTINTERFACE_ISTREAMPORT "OMX.QCOM.index.param.contentinterface.istreamport" /**< reference: QOMX_CONTENTINTERFACETYPE*/
 
 /* Source seek access extension string */
-#define OMX_QCOM_INDEX_PARAM_SEEK_ACCESS            "OMX.QCOM.index.param.SeekAccess"                   /**< reference: QOMX_PARAM_SEEKACCESSTYPE*/
+#define OMX_QCOM_INDEX_PARAM_SEEK_ACCESS "OMX.QCOM.index.param.SeekAccess" /**< reference: QOMX_PARAM_SEEKACCESSTYPE*/
 
 /* Media duration extension string*/
-#define OMX_QCOM_INDEX_CONFIG_MEDIADURATION                "OMX.QCOM.index.config.MediaDuration"               /**< reference: OMX_TIME_CONFIG_MEDIADURATIONTYPE*/
+#define OMX_QCOM_INDEX_CONFIG_MEDIADURATION "OMX.QCOM.index.config.MediaDuration" /**< reference: OMX_TIME_CONFIG_MEDIADURATIONTYPE*/
 
 /**
  *  Data interface Params
@@ -76,10 +76,10 @@ extern "C"
  *  pInterface     : Interface pointer
  */
 typedef struct QOMX_CONTENTINTERFACETYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nInterfaceSize;
-    OMX_U8 pInterface[1];
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nInterfaceSize;
+  OMX_U8 pInterface[1];
 } QOMX_DATAINTERFACETYPE;
 
 /**
@@ -92,10 +92,10 @@ typedef struct QOMX_CONTENTINTERFACETYPE {
  *  bSeekAllowed   : Flag to indicate whether seek is supported or not
  */
 typedef struct QOMX_PARAM_SEEKACCESSTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_BOOL bSeekAllowed;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_BOOL bSeekAllowed;
 } QOMX_PARAM_SEEKACCESSTYPE;
 
 /**
@@ -106,12 +106,12 @@ typedef struct QOMX_PARAM_SEEKACCESSTYPE {
  *  nVersion       : OMX specification version information
  *  nPortIndex     : Index of port
  *  nDuration      : Total duration of the media
-*/
+ */
 typedef struct OMX_TIME_CONFIG_MEDIADURATIONTYPE {
-    OMX_U32 nSize;
-    OMX_VERSIONTYPE nVersion;
-    OMX_U32 nPortIndex;
-    OMX_TICKS nDuration;
+  OMX_U32 nSize;
+  OMX_VERSIONTYPE nVersion;
+  OMX_U32 nPortIndex;
+  OMX_TICKS nDuration;
 } OMX_TIME_CONFIG_MEDIADURATIONTYPE;
 
 /**
@@ -141,8 +141,7 @@ typedef struct OMX_TIME_CONFIG_MEDIADURATIONTYPE {
  *                    sizes, OMX_GetParameter returns
  *                    OMX_ErrorNoMore.
  */
-typedef struct QOMX_FRAMESIZETYPE
-{
+typedef struct QOMX_FRAMESIZETYPE {
   OMX_U32 nSize;
   OMX_VERSIONTYPE nVersion;
   OMX_U32 nPortIndex;
@@ -150,7 +149,7 @@ typedef struct QOMX_FRAMESIZETYPE
   OMX_U32 nFrameSizeIndex;
 } QOMX_FRAMESIZETYPE;
 
-#if defined( __cplusplus )
+#if defined(__cplusplus)
 }
 #endif /* end of macro __cplusplus */
 

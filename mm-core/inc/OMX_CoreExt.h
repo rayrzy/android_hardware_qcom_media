@@ -39,23 +39,20 @@ extern "C" {
  */
 #include <OMX_Core.h>
 
-
 /** Event type extensions. */
-typedef enum OMX_EVENTEXTTYPE
-{
-    OMX_EventIndexSettingChanged = OMX_EventKhronosExtensions, /**< component signals the IL client of a change
-                                                                    in a param, config, or extension */
-    OMX_EventExtMax = 0x7FFFFFFF
+typedef enum OMX_EVENTEXTTYPE {
+  OMX_EventIndexSettingChanged = OMX_EventKhronosExtensions, /**< component signals the IL client of a change
+                                                                  in a param, config, or extension */
+  OMX_EventExtMax = 0x7FFFFFFF
 } OMX_EVENTEXTTYPE;
-
 
 /** Enable or disable a callback event. */
 typedef struct OMX_CONFIG_CALLBACKREQUESTTYPE {
-    OMX_U32 nSize;              /**< size of the structure in bytes */
-    OMX_VERSIONTYPE nVersion;   /**< OMX specification version information */
-    OMX_U32 nPortIndex;         /**< port that this structure applies to */
-    OMX_INDEXTYPE nIndex;       /**< the index the callback is requested for */
-    OMX_BOOL bEnable;           /**< enable (OMX_TRUE) or disable (OMX_FALSE) the callback */
+  OMX_U32 nSize;            /**< size of the structure in bytes */
+  OMX_VERSIONTYPE nVersion; /**< OMX specification version information */
+  OMX_U32 nPortIndex;       /**< port that this structure applies to */
+  OMX_INDEXTYPE nIndex;     /**< the index the callback is requested for */
+  OMX_BOOL bEnable;         /**< enable (OMX_TRUE) or disable (OMX_FALSE) the callback */
 } OMX_CONFIG_CALLBACKREQUESTTYPE;
 
 #ifdef __cplusplus

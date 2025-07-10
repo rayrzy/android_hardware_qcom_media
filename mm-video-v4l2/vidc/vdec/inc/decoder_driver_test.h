@@ -25,16 +25,16 @@ WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 --------------------------------------------------------------------------*/
-#include <stdio.h>
-#include <stdlib.h>
-#include "message_queue.h"
 #include <fcntl.h>
-#include <sys/ioctl.h>
-#include <sys/mman.h>
 #include <inttypes.h>
 #include <pthread.h>
 #include <semaphore.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/ioctl.h>
+#include <sys/mman.h>
+
+#include "message_queue.h"
 #ifndef _TARGET_KERNEL_VERSION_49_
 #include <linux/msm_vidc_dec.h>
 #else
@@ -42,36 +42,34 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #endif
 
 struct video_decoder_context {
-    enum vdec_codec               decoder_format;
+  enum vdec_codec decoder_format;
 #ifndef _TARGET_KERNEL_VERSION_49_
-    enum vdec_output_fromat       output_format;
+  enum vdec_output_fromat output_format;
 #else
-    enum vdec_output_format       output_format;
+  enum vdec_output_format output_format;
 #endif
-    struct vdec_picsize           video_resoultion;
-    struct vdec_allocatorproperty input_buffer;
-    struct vdec_allocatorproperty output_buffer;
-    struct vdec_bufferpayload     **ptr_inputbuffer;
-    struct vdec_bufferpayload     **ptr_outputbuffer;
-    struct vdec_output_frameinfo  **ptr_respbuffer;
-    struct video_queue_context    queue_context;
-    int                           video_driver_fd;
+  struct vdec_picsize video_resoultion;
+  struct vdec_allocatorproperty input_buffer;
+  struct vdec_allocatorproperty output_buffer;
+  struct vdec_bufferpayload **ptr_inputbuffer;
+  struct vdec_bufferpayload **ptr_outputbuffer;
+  struct vdec_output_frameinfo **ptr_respbuffer;
+  struct video_queue_context queue_context;
+  int video_driver_fd;
 
-    FILE * inputBufferFile;
-    FILE * outputBufferFile;
+  FILE *inputBufferFile;
+  FILE *outputBufferFile;
 
-    pthread_t videothread_id;
-    pthread_t asyncthread_id;
-    sem_t sem_synchronize;
+  pthread_t videothread_id;
+  pthread_t asyncthread_id;
+  sem_t sem_synchronize;
 };
 
-int init_decoder ( struct video_decoder_context *init_decode );
-int allocate_buffer ( enum vdec_buffer,
-        struct video_decoder_context *decode_context
-        );
-int free_buffer ( enum vdec_buffer,
-        struct video_decoder_context *decode_context
-        );
-int start_decoding (struct video_decoder_context *decode_context);
-int stop_decoding  (struct video_decoder_context *decode_context);
-int deinit_decoder (struct video_decoder_context *init_decode);
+int init_decoder(struct video_decoder_context *init_decode);
+int allocate_buffer(enum vdec_buffer,
+                    struct video_decoder_context *decode_context);
+int free_buffer(enum vdec_buffer,
+                struct video_decoder_context *decode_context);
+int start_decoding(struct video_decoder_context *decode_context);
+int stop_decoding(struct video_decoder_context *decode_context);
+int deinit_decoder(struct video_decoder_context *init_decode);

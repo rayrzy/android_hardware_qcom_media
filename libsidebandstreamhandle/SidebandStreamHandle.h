@@ -30,10 +30,9 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef ANDROID_SIDEBAND_STREAMHANDLE__H
 #define ANDROID_SIDEBAND_STREAMHANDLE__H
 
-
-#include <utils/Errors.h>
 #include <cutils/native_handle.h>
 #include <dlfcn.h>
+#include <utils/Errors.h>
 
 #include "SidebandHandleBase.h"
 
@@ -43,28 +42,25 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 namespace android {
 // ----------------------------------------------------------------------------
 
-
-
 // ----------------------------------------------------------------------------
 
-typedef SidebandHandleBase * CreateSidebandStreamHandleProducer_t(int bufferWidth, int bufferHeight, int color_format, int compressed_usage);
-typedef SidebandHandleBase * CreateSidebandStreamHandleConsumer_t(const native_handle *handle);
+typedef SidebandHandleBase *CreateSidebandStreamHandleProducer_t(int bufferWidth, int bufferHeight, int color_format, int compressed_usage);
+typedef SidebandHandleBase *CreateSidebandStreamHandleConsumer_t(const native_handle *handle);
 
 class SidebandStreamHandle {
+ public:
+  SidebandStreamHandle();
+  bool init();
+  void destroy();
 
-public:
-    SidebandStreamHandle();
-    bool init();
-    void destroy();
+ public:
+  CreateSidebandStreamHandleProducer_t *mHandleProducer;
+  CreateSidebandStreamHandleConsumer_t *mHandleConsumer;
 
-public:
-    CreateSidebandStreamHandleProducer_t *mHandleProducer;
-    CreateSidebandStreamHandleConsumer_t *mHandleConsumer;
-
-private:
-    void *mLibHandle;
+ private:
+  void *mLibHandle;
 };
 
 // ----------------------------------------------------------------------------
-}; // namespace android
-#endif // ANDROID_SIDEBAND_STREAMHANDLE__H
+};      // namespace android
+#endif  // ANDROID_SIDEBAND_STREAMHANDLE__H

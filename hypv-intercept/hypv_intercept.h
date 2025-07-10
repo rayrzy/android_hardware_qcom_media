@@ -29,16 +29,15 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef __HYPV_INTERCEPT_H__
 #define __HYPV_INTERCEPT_H__
 
-typedef void* HVFE_HANDLE;
+typedef void *HVFE_HANDLE;
 typedef int (*hvfe_callback_handler_t)(void *context, void *message);
 
-struct hvfe_callback_t
-{
-    hvfe_callback_handler_t handler;
-    void* context;
+struct hvfe_callback_t {
+  hvfe_callback_handler_t handler;
+  void *context;
 };
 
-int hypv_open(const char *str, int flag, hvfe_callback_t* cb);
+int hypv_open(const char *str, int flag, hvfe_callback_t *cb);
 int hypv_ioctl(int fd, int cmd, void *data);
 int hypv_close(int fd);
 

@@ -29,61 +29,63 @@ ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
                             O p e n M A X   w r a p p e r s
                              O p e n  M A X   C o r e
 
-*//** @file qc_omx_msg.h
-  This module contains the definitions of the OpenMAX core.
+*/
+/** @file qc_omx_msg.h
+This module contains the definitions of the OpenMAX core.
 
-*//*========================================================================*/
+*/
+/*========================================================================*/
 
 #ifndef _QC_OMX_MSG_H_
 #define _QC_OMX_MSG_H_
 #undef DEBUG_PRINT_ERROR
 #ifdef _ENABLE_QC_MSG_LOG_
-    #ifdef _ANDROID_
-        #include <utils/Log.h>
+#ifdef _ANDROID_
+#include <utils/Log.h>
 
-        #ifdef __cplusplus
-        extern "C" {
-        #endif
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-        #ifndef LOGE
-        #define LOGE ALOGE
-        #endif
+#ifndef LOGE
+#define LOGE ALOGE
+#endif
 
-        #ifndef LOGW
-        #define LOGW ALOGW
-        #endif
+#ifndef LOGW
+#define LOGW ALOGW
+#endif
 
-        #ifndef LOGD
-        #define LOGD ALOGD
-        #endif
+#ifndef LOGD
+#define LOGD ALOGD
+#endif
 
-        #ifndef LOGV
-        #define LOGV ALOGV
-        #endif
+#ifndef LOGV
+#define LOGV ALOGV
+#endif
 
-        #ifndef LOGI
-        #define LOGI ALOGI
-        #endif
+#ifndef LOGI
+#define LOGI ALOGI
+#endif
 
-        #ifdef __cplusplus
-        }
-        #endif
+#ifdef __cplusplus
+}
+#endif
 
-        #define DEBUG_PRINT_ERROR LOGE
-        #define DEBUG_PRINT       LOGI
-        #define DEBUG_DETAIL      LOGV
-    #else
-        #define DEBUG_PRINT_ERROR printf
-        #define DEBUG_PRINT       printf
-        #define DEBUG_DETAIL      printf
-    #endif // _ANDROID_
+#define DEBUG_PRINT_ERROR LOGE
+#define DEBUG_PRINT LOGI
+#define DEBUG_DETAIL LOGV
 #else
-    #ifdef _ANDROID_
-        #include <utils/Log.h>
-        #define DEBUG_PRINT_ERROR ALOGV
-        #define DEBUG_PRINT ALOGV
-        #define DEBUG_DETAIL ALOGV
-    #endif // _ANDROID_
-#endif // _ENABLE_QC_MSG_LOG_
+#define DEBUG_PRINT_ERROR printf
+#define DEBUG_PRINT printf
+#define DEBUG_DETAIL printf
+#endif  // _ANDROID_
+#else
+#ifdef _ANDROID_
+#include <utils/Log.h>
+#define DEBUG_PRINT_ERROR ALOGV
+#define DEBUG_PRINT ALOGV
+#define DEBUG_DETAIL ALOGV
+#endif  // _ANDROID_
+#endif  // _ENABLE_QC_MSG_LOG_
 
-#endif // _QC_OMX_MSG_H_
+#endif  // _QC_OMX_MSG_H_
